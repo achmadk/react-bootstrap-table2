@@ -23,7 +23,7 @@ export default (options = {
   class SearchProvider extends React.Component {
     constructor(props) {
       super(props);
-      const { searchText } = this.props;
+      const { searchText } = props;
       let initialData = props.data;
       if (isRemoteSearch() && searchText !== '') {
         handleRemoteSearchChange(searchText);
@@ -35,16 +35,16 @@ export default (options = {
     }
 
     getSnapshotBeforeUpdate(prevProps) {
-      if (prevProps.searchText !== this.props.searchText) {
-        if (isRemoteSearch()) {
+      if (isRemoteSearch()) {
+        if (prevProps.searchText !== this.props.searchText) {
           return 'handleRemoteSearchChange';
         }
-        return 'triggerListener';
-      }
-      if (isRemoteSearch()) {
         return 'setState';
       }
-      if (!_.isEqual(prevProps.data, this.propsdata)) {
+      if (!isRemoteSearch() && (prevProps.searchText !== this.props.searchText)) {
+        return 'triggerListener';
+      }
+      if (!_.isEqual(prevProps.data, this.props.data)) {
         return 'triggerListener';
       }
       return null;
