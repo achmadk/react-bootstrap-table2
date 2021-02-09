@@ -39,9 +39,12 @@ export default (options = {
         if (prevProps.searchText !== this.props.searchText) {
           return 'handleRemoteSearchChange';
         }
-        return 'setState';
+        if (!_.isEqual(prevProps.data, this.props.data)) {
+          return 'setState';
+        }
+        return null;
       }
-      if (!isRemoteSearch() && (prevProps.searchText !== this.props.searchText)) {
+      if (prevProps.searchText !== this.props.searchText) {
         return 'triggerListener';
       }
       if (!_.isEqual(prevProps.data, this.props.data)) {
