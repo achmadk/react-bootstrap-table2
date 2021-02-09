@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MouseEvent, TdHTMLAttributes, ReactNode, CSSProperties, ThHTMLAttributes, HTMLAttributes, MouseEventHandler } from 'react';
-export { EventEmitter } from 'events'
+import { MouseEvent, TdHTMLAttributes, ReactNode, CSSProperties, ThHTMLAttributes, HTMLAttributes, MouseEventHandler, ReactElement } from 'react';
+export { EventEmitter } from 'events';
 export { ReactBootstrapTableUtilities } from './utils';
 export declare type BootstrapTableOrders = 'asc' | 'desc';
 export declare type BootstrapTableFilterPosition = 'inline' | 'top' | 'bottom';
@@ -1316,11 +1316,5 @@ export interface BootstrapTableProps<TableData extends DefaultTableData = Defaul
      */
     columns: ColumnAttributes[];
 }
-
-declare function BootstrapTable<
-    TableData extends DefaultTableData = DefaultTableData,
-    ColumnAttributes extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>
->(
-    props: BootstrapTableProps<TableData, ColumnAttributes>
-): ReactElement<BootstrapTableProps<TableData, ColumnAttributes>>
-export default BootstrapTable
+declare function BootstrapTable<TableData extends DefaultTableData = DefaultTableData, ColumnAttributes extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>>(props: BootstrapTableProps<TableData, ColumnAttributes>): ReactElement<BootstrapTableProps<TableData, ColumnAttributes>>;
+export default BootstrapTable;
