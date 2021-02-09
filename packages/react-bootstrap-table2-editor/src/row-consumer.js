@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 import React from 'react';
 import { DELAY_FOR_DBCLICK, DBCLICK_TO_CELL_EDIT, CLICK_TO_CELL_EDIT } from './const';
@@ -7,8 +8,8 @@ export default (Component, selectRowEnabled) => {
   const renderWithCellEdit = (props, cellEdit) => {
     const key = props.value;
     const editableRow = !(
-      cellEdit.nonEditableRows.length > 0 &&
-      cellEdit.nonEditableRows.indexOf(key) > -1
+      cellEdit.nonEditableRows.length > 0
+      && cellEdit.nonEditableRows.indexOf(key) > -1
     );
 
     const attrs = {};
@@ -33,7 +34,7 @@ export default (Component, selectRowEnabled) => {
   function withConsumer(props) {
     return (
       <Consumer>
-        { cellEdit => renderWithCellEdit(props, cellEdit) }
+        { (cellEdit) => renderWithCellEdit(props, cellEdit) }
       </Consumer>
     );
   }

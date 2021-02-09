@@ -1,18 +1,14 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint react/require-default-props: 0 */
-/* eslint jsx-a11y/href-no-hash: 0 */
 import cs from 'classnames';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class PageButton extends Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(e) {
+  handleClick = (e) => {
+    const { onPageChange, page } = this.props;
     e.preventDefault();
-    this.props.onPageChange(this.props.page);
+    onPageChange(page);
   }
 
   render() {

@@ -1,5 +1,5 @@
 import csvOperation from './csv';
 
-export default {
-  csvOperation
-};
+const Operation = { csvOperation };
+
+export default Operation;

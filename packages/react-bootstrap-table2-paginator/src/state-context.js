@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable react/destructuring-assignment */
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
 /* eslint no-lonely-if: 0 */
@@ -9,56 +11,197 @@ import { alignPage } from './page';
 
 const StateContext = React.createContext();
 
+function updateStateFromProps(props) {
+  let currPage;
+  let currSizePerPage;
+  const { options } = props.pagination;
+  const sizePerPageList = options.sizePerPageList || Const.SIZE_PER_PAGE_LIST;
+
+  // initialize current page
+  if (typeof options.page !== 'undefined') {
+    currPage = options.page;
+  } else if (typeof options.pageStartIndex !== 'undefined') {
+    currPage = options.pageStartIndex;
+  } else {
+    currPage = Const.PAGE_START_INDEX;
+  }
+
+  // initialize current sizePerPage
+  if (typeof options.sizePerPage !== 'undefined') {
+    currSizePerPage = options.sizePerPage;
+  } else if (typeof sizePerPageList[0] === 'object') {
+    currSizePerPage = sizePerPageList[0].value;
+  } else {
+    const [currSizePerPageList] = sizePerPageList;
+    currSizePerPage = currSizePerPageList;
+  }
+
+  return {
+    currPage,
+    dataSize: options.totalSize,
+    currSizePerPage
+  };
+}
+
 class StateProvider extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChangePage = this.handleChangePage.bind(this);
-    this.handleDataSizeChange = this.handleDataSizeChange.bind(this);
-    this.handleChangeSizePerPage = this.handleChangeSizePerPage.bind(this);
+    // this.handleChangePage = this.handleChangePage.bind(this);
+    // this.handleDataSizeChange = this.handleDataSizeChange.bind(this);
+    // this.handleChangeSizePerPage = this.handleChangeSizePerPage.bind(this);
 
-    let currPage;
-    let currSizePerPage;
-    const { options } = props.pagination;
-    const sizePerPageList = options.sizePerPageList || Const.SIZE_PER_PAGE_LIST;
+    // let currPage;
+    // let currSizePerPage;
+    // const { options } = props.pagination;
+    // const sizePerPageList = options.sizePerPageList || Const.SIZE_PER_PAGE_LIST;
 
-    // initialize current page
-    if (typeof options.page !== 'undefined') {
-      currPage = options.page;
-    } else if (typeof options.pageStartIndex !== 'undefined') {
-      currPage = options.pageStartIndex;
-    } else {
-      currPage = Const.PAGE_START_INDEX;
-    }
+    // // initialize current page
+    // if (typeof options.page !== 'undefined') {
+    //   currPage = options.page;
+    // } else if (typeof options.pageStartIndex !== 'undefined') {
+    //   currPage = options.pageStartIndex;
+    // } else {
+    //   currPage = Const.PAGE_START_INDEX;
+    // }
 
-    // initialize current sizePerPage
-    if (typeof options.sizePerPage !== 'undefined') {
-      currSizePerPage = options.sizePerPage;
-    } else if (typeof sizePerPageList[0] === 'object') {
-      currSizePerPage = sizePerPageList[0].value;
-    } else {
-      currSizePerPage = sizePerPageList[0];
-    }
+    // // initialize current sizePerPage
+    // if (typeof options.sizePerPage !== 'undefined') {
+    //   currSizePerPage = options.sizePerPage;
+    // } else if (typeof sizePerPageList[0] === 'object') {
+    //   currSizePerPage = sizePerPageList[0].value;
+    // } else {
+    //   const [currSizePerPageList] = sizePerPageList;
+    //   currSizePerPage = currSizePerPageList;
+    // }
 
-    this.currPage = currPage;
-    this.dataSize = options.totalSize;
-    this.currSizePerPage = currSizePerPage;
+    // this.currPage = currPage;
+    // this.dataSize = options.totalSize;
+    // this.currSizePerPage = currSizePerPage;
+    this.state = updateStateFromProps(props);
     this.dataChangeListener = new EventEmitter();
     this.dataChangeListener.on('filterChanged', this.handleDataSizeChange);
   }
 
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
+    const { custom } = nextProps.pagination.options;
+
+    // user should align the page when the page is not fit to the data size when remote enable
+    if (this.isRemotePagination() || custom) {
+      // if (typeof nextProps.pagination.options.page !== 'undefined') {
+      //   this.currPage = nextProps.pagination.options.page;
+      // }
+      // if (typeof nextProps.pagination.options.sizePerPage !== 'undefined') {
+      //   this.currSizePerPage = nextProps.pagination.options.sizePerPage;
+      // }
+      // if (typeof nextProps.pagination.options.totalSize !== 'undefined') {
+      //   this.dataSize = nextProps.pagination.options.totalSize;
+      // }
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        ...updateStateFromProps(nextProps)
+      });
+    }
+  }
+
+  handleDataSizeChange = (newDataSize) => {
+    const { pagination: { options } } = this.props;
+    this.setState(({ dataSize, currPage, currSizePerPage }) => {
+      const pageStartIndex = typeof options.pageStartIndex === 'undefined'
+        ? Const.PAGE_START_INDEX : options.pageStartIndex;
+      return {
+        currPage: alignPage(
+          newDataSize,
+          dataSize,
+          currPage,
+          currSizePerPage,
+          pageStartIndex
+        ),
+        dataSize: newDataSize
+      };
+    }, () => {
+      this.forceUpdate();
+    });
+    // const { dataSize, currPage, currSizePerPage } = this.state;
+    // const pageStartIndex = typeof options.pageStartIndex === 'undefined'
+    //   ? Const.PAGE_START_INDEX : options.pageStartIndex;
+    // this.currPage = alignPage(
+    //   newDataSize,
+    //   dataSize,
+    //   currPage,
+    //   currSizePerPage,
+    //   pageStartIndex
+    // );
+    // this.dataSize = newDataSize;
+    // this.forceUpdate();
+  }
+
+  handleChangePage = (currPage) => {
+    // const { currSizePerPage } = this;
+    const { currSizePerPage } = this.state;
+    const { pagination: { options } } = this.props;
+
+    if (options.onPageChange) {
+      options.onPageChange(currPage, currSizePerPage);
+    }
+
+    // this.currPage = currPage;
+    this.setState({ currPage }, () => {
+      // eslint-disable-next-line no-shadow
+      const { currPage, currSizePerPage } = this.state;
+      if (this.isRemotePagination()) {
+        this.paginationRemoteEmitter.emit('paginationChange', currPage, currSizePerPage);
+        return;
+      }
+      this.forceUpdate();
+    });
+
+    // if (this.isRemotePagination()) {
+    //   this.getPaginationRemoteEmitter().emit('paginationChange', currPage, currSizePerPage);
+    //   return;
+    // }
+    // this.forceUpdate();
+  }
+
+  handleChangeSizePerPage = (currSizePerPage, currPage) => {
+    const { pagination: { options } } = this.props;
+
+    if (options.onSizePerPageChange) {
+      options.onSizePerPageChange(currSizePerPage, currPage);
+    }
+
+    // this.currPage = currPage;
+    // this.currSizePerPage = currSizePerPage;
+    this.setState({ currPage, currSizePerPage }, () => {
+      // eslint-disable-next-line no-shadow
+      const { currPage, currSizePerPage } = this.state;
+      if (this.isRemotePagination()) {
+        this.paginationRemoteEmitter.emit('paginationChange', currPage, currSizePerPage);
+        return;
+      }
+      this.forceUpdate();
+    });
+
+    // if (this.isRemotePagination()) {
+    //   this.getPaginationRemoteEmitter().emit('paginationChange', currPage, currSizePerPage);
+    //   return;
+    // }
+    // this.forceUpdate();
+  }
+
   getPaginationProps = () => {
     const { pagination: { options }, bootstrap4, tableId } = this.props;
-    const { currPage, currSizePerPage, dataSize } = this;
-    const withFirstAndLast = typeof options.withFirstAndLast === 'undefined' ?
-      Const.With_FIRST_AND_LAST : options.withFirstAndLast;
-    const alwaysShowAllBtns = typeof options.alwaysShowAllBtns === 'undefined' ?
-      Const.SHOW_ALL_PAGE_BTNS : options.alwaysShowAllBtns;
-    const hideSizePerPage = typeof options.hideSizePerPage === 'undefined' ?
-      Const.HIDE_SIZE_PER_PAGE : options.hideSizePerPage;
-    const hidePageListOnlyOnePage = typeof options.hidePageListOnlyOnePage === 'undefined' ?
-      Const.HIDE_PAGE_LIST_ONLY_ONE_PAGE : options.hidePageListOnlyOnePage;
-    const pageStartIndex = typeof options.pageStartIndex === 'undefined' ?
-      Const.PAGE_START_INDEX : options.pageStartIndex;
+    const { currPage, currSizePerPage, dataSize } = this.state;
+    const withFirstAndLast = typeof options.withFirstAndLast === 'undefined'
+      ? Const.With_FIRST_AND_LAST : options.withFirstAndLast;
+    const alwaysShowAllBtns = typeof options.alwaysShowAllBtns === 'undefined'
+      ? Const.SHOW_ALL_PAGE_BTNS : options.alwaysShowAllBtns;
+    const hideSizePerPage = typeof options.hideSizePerPage === 'undefined'
+      ? Const.HIDE_SIZE_PER_PAGE : options.hideSizePerPage;
+    const hidePageListOnlyOnePage = typeof options.hidePageListOnlyOnePage === 'undefined'
+      ? Const.HIDE_PAGE_LIST_ONLY_ONE_PAGE : options.hidePageListOnlyOnePage;
+    const pageStartIndex = typeof options.pageStartIndex === 'undefined'
+      ? Const.PAGE_START_INDEX : options.pageStartIndex;
     return {
       ...options,
       bootstrap4,
@@ -92,27 +235,9 @@ class StateProvider extends React.Component {
     };
   }
 
-  setPaginationRemoteEmitter = (remoteEmitter) => {
-    this.remoteEmitter = remoteEmitter;
-  }
-
-  getPaginationRemoteEmitter = () => this.remoteEmitter || this.props.remoteEmitter;
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { custom } = nextProps.pagination.options;
-
-    // user should align the page when the page is not fit to the data size when remote enable
-    if (this.isRemotePagination() || custom) {
-      if (typeof nextProps.pagination.options.page !== 'undefined') {
-        this.currPage = nextProps.pagination.options.page;
-      }
-      if (typeof nextProps.pagination.options.sizePerPage !== 'undefined') {
-        this.currSizePerPage = nextProps.pagination.options.sizePerPage;
-      }
-      if (typeof nextProps.pagination.options.totalSize !== 'undefined') {
-        this.dataSize = nextProps.pagination.options.totalSize;
-      }
-    }
+  get paginationRemoteEmitter() {
+    const { remoteEmitter } = this.props;
+    return this.remoteEmitter || remoteEmitter;
   }
 
   isRemotePagination = () => {
@@ -121,53 +246,8 @@ class StateProvider extends React.Component {
     return e.result;
   };
 
-  handleDataSizeChange(newDataSize) {
-    const { pagination: { options } } = this.props;
-    const pageStartIndex = typeof options.pageStartIndex === 'undefined' ?
-      Const.PAGE_START_INDEX : options.pageStartIndex;
-    this.currPage = alignPage(
-      newDataSize,
-      this.dataSize,
-      this.currPage,
-      this.currSizePerPage,
-      pageStartIndex
-    );
-    this.dataSize = newDataSize;
-    this.forceUpdate();
-  }
-
-  handleChangePage(currPage) {
-    const { currSizePerPage } = this;
-    const { pagination: { options } } = this.props;
-
-    if (options.onPageChange) {
-      options.onPageChange(currPage, currSizePerPage);
-    }
-
-    this.currPage = currPage;
-
-    if (this.isRemotePagination()) {
-      this.getPaginationRemoteEmitter().emit('paginationChange', currPage, currSizePerPage);
-      return;
-    }
-    this.forceUpdate();
-  }
-
-  handleChangeSizePerPage(currSizePerPage, currPage) {
-    const { pagination: { options } } = this.props;
-
-    if (options.onSizePerPageChange) {
-      options.onSizePerPageChange(currSizePerPage, currPage);
-    }
-
-    this.currPage = currPage;
-    this.currSizePerPage = currSizePerPage;
-
-    if (this.isRemotePagination()) {
-      this.getPaginationRemoteEmitter().emit('paginationChange', currPage, currSizePerPage);
-      return;
-    }
-    this.forceUpdate();
+  setPaginationRemoteEmitter = (remoteEmitter) => {
+    this.remoteEmitter = remoteEmitter;
   }
 
   render() {

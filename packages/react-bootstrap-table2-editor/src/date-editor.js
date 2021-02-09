@@ -1,26 +1,31 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint no-return-assign: 0 */
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import cs from 'classnames';
 import PropTypes from 'prop-types';
 
 class DateEditor extends Component {
+  date = createRef()
+
   componentDidMount() {
     const { defaultValue, didMount } = this.props;
-    this.date.valueAsDate = new Date(defaultValue);
-    this.date.focus();
+    this.date.current.valueAsDate = new Date(defaultValue);
+    this.date.current.focus();
     if (didMount) didMount();
   }
 
   getValue() {
-    return this.date.value;
+    return this.date.curent?.value;
   }
 
   render() {
-    const { defaultValue, didMount, className, ...rest } = this.props;
+    const {
+      defaultValue, didMount, className, ...rest
+    } = this.props;
     const editorClass = cs('form-control editor edit-date', className);
     return (
       <input
-        ref={ node => this.date = node }
+        ref={ this.date }
         type="date"
         className={ editorClass }
         { ...rest }

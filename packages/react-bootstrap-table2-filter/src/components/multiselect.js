@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/require-default-props: 0 */
 /* eslint no-return-assign: 0 */
 /* eslint no-param-reassign: 0 */
@@ -6,7 +7,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { LIKE, EQ } from '../comparison';
 import { FILTER_TYPE } from '../const';
-
 
 function optionsEquals(currOpts, prevOpts) {
   const keys = Object.keys(currOpts);
@@ -20,7 +20,7 @@ function optionsEquals(currOpts, prevOpts) {
 
 const getSelections = (container) => {
   if (container.selectedOptions) {
-    return Array.from(container.selectedOptions).map(item => item.value);
+    return Array.from(container.selectedOptions).map((item) => item.value);
   }
   const selections = [];
   const totalLen = container.options.length;
@@ -34,9 +34,8 @@ const getSelections = (container) => {
 class MultiSelectFilter extends Component {
   constructor(props) {
     super(props);
-    this.filter = this.filter.bind(this);
     this.applyFilter = this.applyFilter.bind(this);
-    const isSelected = props.defaultValue.map(item => props.options[item]).length > 0;
+    const isSelected = props.defaultValue.map((item) => props.options[item]).length > 0;
     this.state = { isSelected };
   }
 
@@ -58,10 +57,11 @@ class MultiSelectFilter extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    const { defaultValue, options } = this.props;
     let needFilter = false;
-    if (this.props.defaultValue !== prevProps.defaultValue) {
+    if (defaultValue !== prevProps.defaultValue) {
       needFilter = true;
-    } else if (!optionsEquals(this.props.options, prevProps.options)) {
+    } else if (!optionsEquals(options, prevProps.options)) {
       needFilter = true;
     }
     if (needFilter) {
@@ -79,34 +79,37 @@ class MultiSelectFilter extends Component {
 
   getOptions() {
     const optionTags = [];
-    const { options, placeholder, column, withoutEmptyOption } = this.props;
+    const {
+      options, placeholder, column, withoutEmptyOption
+    } = this.props;
     if (!withoutEmptyOption) {
       optionTags.push((
         <option key="-1" value="">{ placeholder || `Select ${column.text}...` }</option>
       ));
     }
-    Object.keys(options).forEach(key =>
-      optionTags.push(<option key={ key } value={ key }>{ options[key] }</option>)
-    );
+    // eslint-disable-next-line max-len
+    Object.keys(options).forEach((key) => optionTags.push(<option key={ key } value={ key }>{ options[key] }</option>));
     return optionTags;
   }
 
-  cleanFiltered() {
-    const value = (this.props.defaultValue !== undefined) ? this.props.defaultValue : [];
-    this.selectInput.value = value;
-    this.applyFilter(value);
-  }
-
-  applyFilter(value) {
+  applyFilter = (value) => {
+    const { onFilter, column } = this.props;
     if (value.length === 1 && value[0] === '') {
       value = [];
     }
     this.setState(() => ({ isSelected: value.length > 0 }));
-    this.props.onFilter(this.props.column, FILTER_TYPE.MULTISELECT)(value);
+    onFilter(column, FILTER_TYPE.MULTISELECT)(value);
   }
 
-  filter(e) {
+  filter = (e) => {
     const value = getSelections(e.target);
+    this.applyFilter(value);
+  }
+
+  cleanFiltered() {
+    const { defaultValue } = this.props;
+    const value = (defaultValue !== undefined) ? defaultValue : [];
+    this.selectInput.value = value;
     this.applyFilter(value);
   }
 
@@ -126,9 +129,9 @@ class MultiSelectFilter extends Component {
       getFilter,
       ...rest
     } = this.props;
+    const { isSelected } = this.state;
 
-    const selectClass =
-      `filter select-filter form-control ${className} ${this.state.isSelected ? '' : 'placeholder-selected'}`;
+    const selectClass = `filter select-filter form-control ${className} ${isSelected ? '' : 'placeholder-selected'}`;
     const elmId = `multiselect-filter-column-${column.dataField}${id ? `-${id}` : ''}`;
 
     return (
@@ -136,16 +139,19 @@ class MultiSelectFilter extends Component {
         className="filter-label"
         htmlFor={ elmId }
       >
-        <span className="sr-only">Filter by {column.text}</span>
+        <span className="sr-only">
+          Filter by
+          {column.text}
+        </span>
         <select
           { ...rest }
-          ref={ n => this.selectInput = n }
+          ref={ (n) => this.selectInput = n }
           id={ elmId }
           style={ style }
           multiple
           className={ selectClass }
           onChange={ this.filter }
-          onClick={ e => e.stopPropagation() }
+          onClick={ (e) => e.stopPropagation() }
           defaultValue={ this.getDefaultValue() }
         >
           { this.getOptions() }

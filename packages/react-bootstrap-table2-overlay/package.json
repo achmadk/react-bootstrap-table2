@@ -1,47 +1,70 @@
 {
-  "name": "react-bootstrap-table2-overlay",
-  "version": "2.0.0",
-  "description": "it's a loading overlay addons for react-bootstrap-table2",
-  "main": "./lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/react-bootstrap-table/react-bootstrap-table2.git"
-  },
-  "license": "MIT",
-  "keywords": [
-    "react",
-    "bootstrap",
-    "table",
-    "grid",
-    "react-bootstrap-table-addons",
-    "react-component"
-  ],
-  "files": [
-    "lib/",
-    "dist/"
-  ],
-  "tags": [
-    "react"
-  ],
-  "author": "AllenFang",
-  "contributors": [
-    {
-      "name": "Allen Fang",
-      "email": "ayu780129@hotmail.com",
-      "url": "https://github.com/AllenFang"
-    },
-    {
-      "name": "Chun-MingChen",
-      "email": "nick830314@gmail.com",
-      "url": "https://github.com/Chun-MingChen"
-    }
-  ],
-  "dependencies": {
-    "react-loading-overlay": "1.0.1"
-  },
-  "peerDependencies": {
-    "prop-types": "^15.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
-  }
+	"name": "react-bootstrap-table2-overlay-esm",
+	"version": "0.1.0",
+	"description": "it's a loading overlay addons for react-bootstrap-table2",
+	"main": "dist/react-bootstrap-table2-overlay-esm.cjs.js",
+	"module": "dist/react-bootstrap-table2-overlay-esm.esm.js",
+	"typings": "types/index.d.ts",
+	"browser": {
+		"./dist/react-bootstrap-table2-overlay-esm.cjs.js": "./dist/react-bootstrap-table2-overlay-esm.browser.cjs.js",
+		"./dist/react-bootstrap-table2-overlay-esm.esm.js": "./dist/react-bootstrap-table2-overlay-esm.browser.esm.js"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/react-bootstrap-table2-overlay-esm.esm.js",
+			"require": "./dist/react-bootstrap-table2-overlay-esm.esm.js"
+		}
+	},
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/achmadk/react-bootstrap-table2.git"
+	},
+	"license": "MIT",
+	"keywords": [
+		"react",
+		"bootstrap",
+		"table",
+		"grid",
+		"react-bootstrap-table-addons",
+		"react-component"
+	],
+	"files": [
+		"dist/",
+		"types/"
+	],
+	"tags": [
+		"react"
+	],
+	"author": "AllenFang",
+	"contributors": [
+		{
+			"name": "Allen Fang",
+			"email": "ayu780129@hotmail.com",
+			"url": "https://github.com/AllenFang"
+		},
+		{
+			"name": "Chun-MingChen",
+			"email": "nick830314@gmail.com",
+			"url": "https://github.com/Chun-MingChen"
+		},
+		{
+			"name": "Achmad Kurnianto",
+			"email": "achmad.kurnianto@gmail.com",
+			"url": "https://github.com/achmadk"
+		}
+	],
+	"dependencies": {
+		"react-loading-overlay-ts": "0.1.0"
+	},
+	"peerDependencies": {
+		"prop-types": "^15.7.2",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1"
+	},
+	"preconstruct": {
+		"entrypoints": [
+			"index.js"
+		]
+	}
 }

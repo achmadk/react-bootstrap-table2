@@ -1,49 +1,75 @@
 {
-  "name": "react-bootstrap-table-next",
-  "version": "4.0.3",
-  "description": "Next generation of react-bootstrap-table",
-  "main": "./lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/react-bootstrap-table/react-bootstrap-table2.git"
-  },
-  "license": "MIT",
-  "keywords": [
-    "react",
-    "bootstrap",
-    "table",
-    "grid",
-    "react-component"
-  ],
-  "files": [
-    "lib/",
-    "dist/"
-  ],
-  "tags": [
-    "react"
-  ],
-  "author": "AllenFang",
-  "contributors": [
-    {
-      "name": "Allen Fang",
-      "email": "ayu780129@hotmail.com",
-      "url": "https://github.com/AllenFang"
-    },
-    {
-      "name": "Chun-MingChen",
-      "email": "nick830314@gmail.com",
-      "url": "https://github.com/Chun-MingChen"
-    }
-  ],
-  "dependencies": {
-    "classnames": "^2.2.5",
-    "react-transition-group": "^4.2.0",
-    "underscore": "1.9.1"
-  },
-  "peerDependencies": {
-    "classnames": "^2.2.5",
-    "prop-types": "^15.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
-  }
+	"name": "react-bootstrap-table-next-esm",
+	"version": "0.1.0",
+	"description": "Next generation of react-bootstrap-table",
+	"main": "dist/react-bootstrap-table-next-esm.cjs.js",
+	"module": "dist/react-bootstrap-table-next-esm.esm.js",
+	"typings": "types/index.d.ts",
+	"exports": {
+		".": {
+			"import": "./dist/react-bootstrap-table-next-esm.esm.js",
+			"require": "./dist/react-bootstrap-table-next-esm.cjs.js"
+		}
+	},
+	"browser": {
+		"./dist/react-bootstrap-table-next-esm.cjs.js": "./dist/react-bootstrap-table-next-esm.browser.cjs.js",
+		"./dist/react-bootstrap-table-next-esm.esm.js": "./dist/react-bootstrap-table-next-esm.browser.esm.js"
+	},
+	"sideEffects": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/achmadk/react-bootstrap-table2.git"
+	},
+	"license": "MIT",
+	"keywords": [
+		"react",
+		"bootstrap",
+		"table",
+		"grid",
+		"react-component"
+	],
+	"files": [
+		"style/",
+		"dist/",
+		"types/"
+	],
+	"tags": [
+		"react"
+	],
+	"author": "AllenFang",
+	"contributors": [
+		{
+			"name": "Allen Fang",
+			"email": "ayu780129@hotmail.com",
+			"url": "https://github.com/AllenFang"
+		},
+		{
+			"name": "Chun-MingChen",
+			"email": "nick830314@gmail.com",
+			"url": "https://github.com/Chun-MingChen"
+		},
+		{
+			"name": "Achmad Kurnianto",
+			"email": "achmad.kurnianto@gmail.com",
+			"url": "https://github.com/achmadk"
+		}
+	],
+	"dependencies": {
+		"@types/events": "3.0.0",
+		"classnames": "^2.2.6",
+		"events": "3.2.0",
+		"react-transition-group": "^4.4.1",
+		"underscore": "1.12.0"
+	},
+	"peerDependencies": {
+		"classnames": "^2.2.6",
+		"prop-types": "^15.7.2",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1"
+	},
+	"preconstruct": {
+		"entrypoints": [
+			"index.js"
+		]
+	}
 }

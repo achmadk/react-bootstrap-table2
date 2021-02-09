@@ -1,23 +1,24 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import PropTypes from 'prop-types';
 
 import PageButton from './page-button';
 
-const PaginatonList = props => (
+const PaginatonList = ({ pages, pageButtonRenderer, onPageChange }) => (
   <ul className="pagination react-bootstrap-table-page-btns-ul">
     {
-      props.pages.map((pageProps) => {
-        if (props.pageButtonRenderer) {
-          return props.pageButtonRenderer({
+      pages.map((pageProps) => {
+        if (pageButtonRenderer) {
+          return pageButtonRenderer({
             ...pageProps,
-            onPageChange: props.onPageChange
+            onPageChange
           });
         }
         return (
           <PageButton
             key={ pageProps.page }
             { ...pageProps }
-            onPageChange={ props.onPageChange }
+            onPageChange={ onPageChange }
           />
         );
       })

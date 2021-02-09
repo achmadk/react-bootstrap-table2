@@ -1,13 +1,16 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/static-property-placement */
 /* eslint no-return-assign: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingOverlay from 'react-loading-overlay';
 
-export default options => loading =>
-  class TableLoadingOverlayWrapper extends React.Component {
+export default (options) => (loading) => class TableLoadingOverlayWrapper extends React.Component {
     static propTypes = {
       children: PropTypes.element.isRequired
     }
+
     componentDidMount() {
       if (loading) {
         const { wrapper } = this.overlay;
@@ -31,7 +34,7 @@ export default options => loading =>
     render() {
       return (
         <LoadingOverlay
-          ref={ n => this.overlay = n }
+          ref={ (n) => this.overlay = n }
           { ...options }
           active={ loading }
         >
@@ -39,4 +42,4 @@ export default options => loading =>
         </LoadingOverlay>
       );
     }
-  };
+};

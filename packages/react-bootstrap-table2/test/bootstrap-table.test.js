@@ -27,7 +27,8 @@ describe('BootstrapTable', () => {
   describe('simplest table', () => {
     beforeEach(() => {
       wrapper = shallow(
-        <BootstrapTable keyField="id" columns={ columns } data={ data } />);
+        <BootstrapTable keyField="id" columns={ columns } data={ data } />
+      );
     });
 
     it('should render successfully', () => {
@@ -51,7 +52,8 @@ describe('BootstrapTable', () => {
 
     beforeEach(() => {
       wrapper = shallow(
-        <BootstrapTable keyField="id" columns={ columns } data={ data } />);
+        <BootstrapTable keyField="id" columns={ columns } data={ data } />
+      );
       instance = wrapper.instance();
     });
 
@@ -70,7 +72,8 @@ describe('BootstrapTable', () => {
           columns={ columns }
           data={ data }
           classes={ classes }
-        />);
+        />
+      );
     });
 
     it('should display customized classes correctly', () => {
@@ -88,7 +91,8 @@ describe('BootstrapTable', () => {
           columns={ columns }
           data={ data }
           wrapperClasses={ classes }
-        />);
+        />
+      );
     });
 
     it('should display customized classes correctly', () => {
@@ -106,7 +110,8 @@ describe('BootstrapTable', () => {
           columns={ columns }
           data={ data }
           id={ id }
-        />);
+        />
+      );
     });
 
     it('should display customized id correctly', () => {
@@ -117,7 +122,8 @@ describe('BootstrapTable', () => {
   describe('when hover props is true', () => {
     beforeEach(() => {
       wrapper = shallow(
-        <BootstrapTable keyField="id" columns={ columns } data={ data } hover />);
+        <BootstrapTable keyField="id" columns={ columns } data={ data } hover />
+      );
     });
 
     it('should have table-hover class on table', () => {
@@ -128,7 +134,8 @@ describe('BootstrapTable', () => {
   describe('when striped props is true', () => {
     beforeEach(() => {
       wrapper = shallow(
-        <BootstrapTable keyField="id" columns={ columns } data={ data } striped />);
+        <BootstrapTable keyField="id" columns={ columns } data={ data } striped />
+      );
     });
 
     it('should have table-striped class on table', () => {
@@ -139,7 +146,8 @@ describe('BootstrapTable', () => {
   describe('when condensed props is true', () => {
     beforeEach(() => {
       wrapper = shallow(
-        <BootstrapTable keyField="id" columns={ columns } data={ data } condensed />);
+        <BootstrapTable keyField="id" columns={ columns } data={ data } condensed />
+      );
     });
 
     it('should have table-condensed class on table', () => {
@@ -150,7 +158,8 @@ describe('BootstrapTable', () => {
   describe('when bordered props is false', () => {
     beforeEach(() => {
       wrapper = shallow(
-        <BootstrapTable keyField="id" columns={ columns } data={ data } bordered={ false } />);
+        <BootstrapTable keyField="id" columns={ columns } data={ data } bordered={ false } />
+      );
     });
 
     it('should not have table-condensed class on table', () => {

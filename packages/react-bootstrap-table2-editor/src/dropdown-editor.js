@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint no-return-assign: 0 */
 import React, { Component } from 'react';
 import cs from 'classnames';
@@ -6,10 +7,10 @@ import PropTypes from 'prop-types';
 class DropDownEditor extends Component {
   constructor(props) {
     super(props);
-    let options = props.options;
+    let { options } = props;
     if (props.getOptions) {
       options = props.getOptions(
-        this.setOptions.bind(this),
+        this.setOptions,
         {
           row: props.row,
           column: props.column
@@ -26,7 +27,7 @@ class DropDownEditor extends Component {
     if (didMount) didMount();
   }
 
-  setOptions(options) {
+  setOptions = (options) => {
     this.setState({ options });
   }
 
@@ -35,7 +36,10 @@ class DropDownEditor extends Component {
   }
 
   render() {
-    const { defaultValue, didMount, getOptions, className, ...rest } = this.props;
+    const {
+      defaultValue, didMount, getOptions, className, ...rest
+    } = this.props;
+    const { options } = this.state;
     const editorClass = cs('form-control editor edit-select', className);
 
     const attr = {
@@ -46,11 +50,11 @@ class DropDownEditor extends Component {
     return (
       <select
         { ...attr }
-        ref={ node => this.select = node }
+        ref={ (node) => this.select = node }
         defaultValue={ defaultValue }
       >
         {
-          this.state.options.map(({ label, value }) => (
+          options.map(({ label, value }) => (
             <option key={ value } value={ value }>{ label }</option>
           ))
         }

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 import React from 'react';
 import { Consumer } from './context';
@@ -22,8 +23,8 @@ export default (_, onStartEdit) => {
         content,
         props.row,
         props.rowIndex,
-        props.columnIndex)
-      ;
+        props.columnIndex
+      );
     }
 
     return (
@@ -36,9 +37,9 @@ export default (_, onStartEdit) => {
     );
   };
 
-  return props => (
+  return (props) => (
     <Consumer>
-      { cellEdit => renderWithEditingCell(props, cellEdit) }
+      { (cellEdit) => renderWithEditingCell(props, cellEdit) }
     </Consumer>
   );
 };

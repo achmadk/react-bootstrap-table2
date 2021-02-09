@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Const from '../const';
 import { BootstrapContext } from '../contexts/bootstrap';
 
-
 const SortCaret = ({ order }) => {
   const orderClass = cs('react-bootstrap-table-sort-order', {
     dropup: order === Const.SORT_ASC

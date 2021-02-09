@@ -77,7 +77,7 @@ Filters.propTypes = {
 };
 
 Filters.defaultProps = {
-  position: Const.FILTERS_POSITION_TOP
+  filterPosition: Const.FILTERS_POSITION_TOP
 };
 
 export default Filters;

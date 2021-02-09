@@ -8,7 +8,7 @@ import {
   FILTER_TYPE
 } from '../src/const';
 import createFilterContext from '../src/context';
-import { textFilter } from '../index';
+import { textFilter } from '../src';
 
 describe('FilterContext', () => {
   let wrapper;
@@ -32,11 +32,12 @@ describe('FilterContext', () => {
     filter: textFilter()
   }];
 
-  const mockBase = jest.fn((props => (
+  const mockBase = jest.fn(((props) => (
     <BootstrapTable
       keyField="id"
       data={ data }
       columns={ columns }
+      // eslint-disable-next-line react/jsx-props-no-spreading
       { ...props }
     />
   )));

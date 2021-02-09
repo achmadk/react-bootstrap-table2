@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
 /* eslint no-lonely-if: 0 */
@@ -14,36 +15,30 @@ const { Provider } = createBaseContext();
 const PaginationDataContext = React.createContext();
 
 class PaginationDataProvider extends Provider {
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    remoteEmitter: PropTypes.object.isRequired,
-    isRemotePagination: PropTypes.func.isRequired
-  }
-
-  // eslint-disable-next-line camelcase, react/sort-comp
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    super.UNSAFE_componentWillReceiveProps(nextProps);
-    const { currSizePerPage } = this;
+  componentDidUpdate(nextProps) {
+    super.componentDidUpdate(nextProps);
+    const { currSizePerPage } = this.state;
     const { custom, onPageChange } = nextProps.pagination.options;
 
-    const pageStartIndex = typeof nextProps.pagination.options.pageStartIndex !== 'undefined' ?
-      nextProps.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
+    const pageStartIndex = typeof nextProps.pagination.options.pageStartIndex !== 'undefined'
+      ? nextProps.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
 
     // user should align the page when the page is not fit to the data size when remote enable
     if (!this.isRemotePagination() && !custom) {
       const newPage = alignPage(
         nextProps.data.length,
         this.props.data.length,
-        this.currPage,
+        this.state.currPage,
         currSizePerPage,
         pageStartIndex
       );
 
-      if (this.currPage !== newPage) {
+      if (this.state.currPage !== newPage) {
         if (onPageChange) {
           onPageChange(newPage, currSizePerPage);
         }
-        this.currPage = newPage;
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ currPage: newPage });
       }
     }
     if (nextProps.onDataSizeChange && nextProps.data.length !== this.props.data.length) {
@@ -77,13 +72,13 @@ class PaginationDataProvider extends Provider {
   render() {
     let { data } = this.props;
     const { pagination: { options } } = this.props;
-    const { currPage, currSizePerPage } = this;
-    const pageStartIndex = typeof options.pageStartIndex === 'undefined' ?
-      Const.PAGE_START_INDEX : options.pageStartIndex;
+    const { currPage, currSizePerPage } = this.state;
+    const pageStartIndex = typeof options.pageStartIndex === 'undefined'
+      ? Const.PAGE_START_INDEX : options.pageStartIndex;
 
-    data = this.isRemotePagination() ?
-      data :
-      getByCurrPage(
+    data = this.isRemotePagination()
+      ? data
+      : getByCurrPage(
         data,
         currPage,
         currSizePerPage,
@@ -91,13 +86,21 @@ class PaginationDataProvider extends Provider {
       );
 
     return (
-      <PaginationDataContext.Provider value={ { data, setRemoteEmitter: this.setRemoteEmitter } }>
+      <PaginationDataContext.Provider
+        value={ { data, setPaginationRemoteEmitter: this.setPaginationRemoteEmitter } }
+      >
         { this.props.children }
         { this.renderDefaultPagination() }
       </PaginationDataContext.Provider>
     );
   }
 }
+
+PaginationDataProvider.propTypes = {
+  data: PropTypes.array.isRequired,
+  remoteEmitter: PropTypes.object.isRequired,
+  isRemotePagination: PropTypes.func.isRequired
+};
 
 export default () => ({
   Provider: PaginationDataProvider,

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import cs from 'classnames';
 import PropTypes from 'prop-types';
@@ -28,7 +29,7 @@ const SizePerPageDropDown = (props) => {
     openClass,
     sizePerPageDefaultClass,
     variation,
-    className,
+    className
   );
 
   const id = tableId ? `${tableId}-pageDropDown` : 'pageDropDown';
@@ -100,6 +101,7 @@ SizePerPageDropDown.propTypes = {
   className: PropTypes.string,
   optionRenderer: PropTypes.func
 };
+
 SizePerPageDropDown.defaultProps = {
   open: false,
   hidden: false,
@@ -110,6 +112,5 @@ SizePerPageDropDown.defaultProps = {
   bootstrap4: false,
   tableId: null
 };
-
 
 export default SizePerPageDropDown;

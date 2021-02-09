@@ -2,12 +2,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const EditorIndicator = ({ invalidMessage }) =>
-  (
-    <div className="alert alert-danger in" role="alert">
-      <strong>{ invalidMessage }</strong>
-    </div>
-  );
+const EditorIndicator = ({ invalidMessage }) => (
+  <div className="alert alert-danger in" role="alert">
+    <strong>{ invalidMessage }</strong>
+  </div>
+);
 
 EditorIndicator.propTypes = {
   invalidMessage: PropTypes.string

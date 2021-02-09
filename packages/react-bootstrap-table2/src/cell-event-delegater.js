@@ -9,18 +9,10 @@ const events = [
   'onAuxClick'
 ];
 
-export default ExtendBase =>
-  class CellEventDelegater extends ExtendBase {
-    constructor(props) {
-      super(props);
-      this.createDefaultEventHandler = this.createDefaultEventHandler.bind(this);
-    }
-
-    createDefaultEventHandler(cb) {
-      return (e) => {
-        const { column, columnIndex, index } = this.props;
-        cb(e, column, typeof columnIndex !== 'undefined' ? columnIndex : index);
-      };
+export default (ExtendBase) => class CellEventDelegater extends ExtendBase {
+    createDefaultEventHandler = (cb) => (e) => {
+      const { column, columnIndex, index } = this.props;
+      cb(e, column, typeof columnIndex !== 'undefined' ? columnIndex : index);
     }
 
     delegate(attrs = {}) {
@@ -32,4 +24,4 @@ export default ExtendBase =>
       });
       return newAttrs;
     }
-  };
+};

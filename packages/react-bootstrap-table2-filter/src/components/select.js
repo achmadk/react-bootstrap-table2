@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/require-default-props: 0 */
 /* eslint no-return-assign: 0 */
 /* eslint react/no-unused-prop-types: 0 */
@@ -12,8 +13,8 @@ function optionsEquals(currOpts, prevOpts) {
     if (currOpts.length === prevOpts.length) {
       for (let i = 0; i < currOpts.length; i += 1) {
         if (
-          currOpts[i].value !== prevOpts[i].value ||
-          currOpts[i].label !== prevOpts[i].label
+          currOpts[i].value !== prevOpts[i].value
+          || currOpts[i].label !== prevOpts[i].label
         ) {
           return false;
         }
@@ -44,7 +45,6 @@ function getOptionValue(options, key) {
 class SelectFilter extends Component {
   constructor(props) {
     super(props);
-    this.filter = this.filter.bind(this);
     this.options = this.getOptions(props);
     const isSelected = getOptionValue(this.options, this.getDefaultValue()) !== undefined;
     this.state = { isSelected };
@@ -53,7 +53,7 @@ class SelectFilter extends Component {
   componentDidMount() {
     const { column, onFilter, getFilter } = this.props;
 
-    const value = this.selectInput.value;
+    const { value } = this.selectInput;
     if (value && value !== '') {
       onFilter(column, FILTER_TYPE.SELECT, true)(value);
     }
@@ -84,7 +84,7 @@ class SelectFilter extends Component {
       needFilter = true;
     }
     if (needFilter) {
-      const value = this.selectInput.value;
+      const { value } = this.selectInput;
       if (value) {
         onFilter(column, FILTER_TYPE.SELECT)(value);
       }
@@ -103,23 +103,26 @@ class SelectFilter extends Component {
     return defaultValue;
   }
 
+  filter = (e) => {
+    const { onFilter, column } = this.props;
+    const { value } = e.target;
+    this.setState(() => ({ isSelected: value !== '' }));
+    onFilter(column, FILTER_TYPE.SELECT)(value);
+  }
+
   cleanFiltered() {
-    const value = (this.props.defaultValue !== undefined) ? this.props.defaultValue : '';
+    const { defaultValue, onFilter, column } = this.props;
+    const value = (defaultValue !== undefined) ? defaultValue : '';
     this.setState(() => ({ isSelected: value !== '' }));
     this.selectInput.value = value;
-    this.props.onFilter(this.props.column, FILTER_TYPE.SELECT)(value);
+    onFilter(column, FILTER_TYPE.SELECT)(value);
   }
 
   applyFilter(value) {
+    const { onFilter, column } = this.props;
     this.selectInput.value = value;
     this.setState(() => ({ isSelected: value !== '' }));
-    this.props.onFilter(this.props.column, FILTER_TYPE.SELECT)(value);
-  }
-
-  filter(e) {
-    const { value } = e.target;
-    this.setState(() => ({ isSelected: value !== '' }));
-    this.props.onFilter(this.props.column, FILTER_TYPE.SELECT)(value);
+    onFilter(column, FILTER_TYPE.SELECT)(value);
   }
 
   renderOptions() {
@@ -132,12 +135,11 @@ class SelectFilter extends Component {
       ));
     }
     if (Array.isArray(options)) {
-      options.forEach(({ value, label }) =>
-        optionTags.push(<option key={ value } value={ value }>{ label }</option>));
+      // eslint-disable-next-line max-len
+      options.forEach(({ value, label }) => optionTags.push(<option key={ value } value={ value }>{ label }</option>));
     } else {
-      Object.keys(options).forEach(key =>
-        optionTags.push(<option key={ key } value={ key }>{ options[key] }</option>)
-      );
+      // eslint-disable-next-line max-len
+      Object.keys(options).forEach((key) => optionTags.push(<option key={ key } value={ key }>{ options[key] }</option>));
     }
     return optionTags;
   }
@@ -158,9 +160,9 @@ class SelectFilter extends Component {
       filterState,
       ...rest
     } = this.props;
+    const { isSelected } = this.state;
 
-    const selectClass =
-      `filter select-filter form-control ${className} ${this.state.isSelected ? '' : 'placeholder-selected'}`;
+    const selectClass = `filter select-filter form-control ${className} ${isSelected ? '' : 'placeholder-selected'}`;
     const elmId = `select-filter-column-${column.dataField}${id ? `-${id}` : ''}`;
 
     return (
@@ -168,15 +170,18 @@ class SelectFilter extends Component {
         className="filter-label"
         htmlFor={ elmId }
       >
-        <span className="sr-only">Filter by { column.text }</span>
+        <span className="sr-only">
+          Filter by
+          { column.text }
+        </span>
         <select
           { ...rest }
-          ref={ n => this.selectInput = n }
+          ref={ (n) => this.selectInput = n }
           id={ elmId }
           style={ style }
           className={ selectClass }
           onChange={ this.filter }
-          onClick={ e => e.stopPropagation() }
+          onClick={ (e) => e.stopPropagation() }
           defaultValue={ this.getDefaultValue() || '' }
         >
           { this.renderOptions() }

@@ -27,7 +27,6 @@ class FooterCell extends eventDelegater(React.Component) {
       ...delegateEvents
     };
 
-
     let text = '';
     if (_.isString(footer)) {
       text = footer;

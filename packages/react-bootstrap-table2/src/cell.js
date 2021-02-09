@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -6,18 +7,12 @@ import eventDelegater from './cell-event-delegater';
 import _ from './utils';
 
 class Cell extends eventDelegater(Component) {
-  constructor(props) {
-    super(props);
-    this.createHandleEditingCell = this.createHandleEditingCell.bind(this);
-  }
-
   shouldComponentUpdate(nextProps) {
     let shouldUpdate = false;
     if (nextProps.column.isDummyField) {
       shouldUpdate = !_.isEqual(this.props.row, nextProps.row);
     } else {
-      shouldUpdate =
-        _.get(this.props.row, this.props.column.dataField)
+      shouldUpdate = _.get(this.props.row, this.props.column.dataField)
           !== _.get(nextProps.row, nextProps.column.dataField);
     }
 
@@ -25,27 +20,28 @@ class Cell extends eventDelegater(Component) {
 
     // if (nextProps.formatter)
 
-    shouldUpdate =
-      (nextProps.column.formatter ? !_.isEqual(this.props.row, nextProps.row) : false) ||
-      this.props.column.hidden !== nextProps.column.hidden ||
-      this.props.column.isDummyField !== nextProps.column.isDummyField ||
-      this.props.rowIndex !== nextProps.rowIndex ||
-      this.props.columnIndex !== nextProps.columnIndex ||
-      this.props.className !== nextProps.className ||
-      this.props.title !== nextProps.title ||
-      this.props.editable !== nextProps.editable ||
-      this.props.clickToEdit !== nextProps.clickToEdit ||
-      this.props.dbclickToEdit !== nextProps.dbclickToEdit ||
-      !_.isEqual(this.props.style, nextProps.style) ||
-      !_.isEqual(this.props.column.formatExtraData, nextProps.column.formatExtraData) ||
-      !_.isEqual(this.props.column.events, nextProps.column.events) ||
-      !_.isEqual(this.props.column.attrs, nextProps.column.attrs) ||
-      this.props.tabIndex !== nextProps.tabIndex;
+    shouldUpdate = (nextProps.column.formatter ? !_.isEqual(this.props.row, nextProps.row) : false)
+      || this.props.column.hidden !== nextProps.column.hidden
+      || this.props.column.isDummyField !== nextProps.column.isDummyField
+      || this.props.rowIndex !== nextProps.rowIndex
+      || this.props.columnIndex !== nextProps.columnIndex
+      || this.props.className !== nextProps.className
+      || this.props.title !== nextProps.title
+      || this.props.editable !== nextProps.editable
+      || this.props.clickToEdit !== nextProps.clickToEdit
+      || this.props.dbclickToEdit !== nextProps.dbclickToEdit
+      || !_.isEqual(this.props.style, nextProps.style)
+      || !_.isEqual(this.props.column.formatExtraData, nextProps.column.formatExtraData)
+      || !_.isEqual(this.props.column.events, nextProps.column.events)
+      || !_.isEqual(this.props.column.attrs, nextProps.column.attrs)
+      || this.props.tabIndex !== nextProps.tabIndex;
     return shouldUpdate;
   }
 
-  createHandleEditingCell = originFunc => (e) => {
-    const { onStart, rowIndex, columnIndex, clickToEdit, dbclickToEdit } = this.props;
+  createHandleEditingCell = (originFunc) => (e) => {
+    const {
+      onStart, rowIndex, columnIndex, clickToEdit, dbclickToEdit
+    } = this.props;
     if ((clickToEdit || dbclickToEdit) && _.isFunction(originFunc)) {
       originFunc(e);
     }

@@ -1,9 +1,11 @@
 /* eslint eqeqeq: 0 */
 /* eslint no-console: 0 */
 import { FILTER_TYPE } from './const';
-import { LIKE, EQ, NE, GT, GE, LT, LE } from './comparison';
+import {
+  LIKE, EQ, NE, GT, GE, LT, LE
+} from './comparison';
 
-export const filterByText = _ => (
+export const filterByText = (_) => (
   data,
   dataField,
   { filterVal: userInput = '', comparator = LIKE, caseSensitive },
@@ -31,7 +33,7 @@ export const filterByText = _ => (
   );
 };
 
-export const filterByNumber = _ => (
+export const filterByNumber = (_) => (
   data,
   dataField,
   { filterVal: { comparator, number } },
@@ -72,7 +74,7 @@ export const filterByNumber = _ => (
   })
 );
 
-export const filterByDate = _ => (
+export const filterByDate = (_) => (
   data,
   dataField,
   { filterVal: { comparator, date } },
@@ -99,13 +101,12 @@ export const filterByDate = _ => (
     const targetMonth = cell.getUTCMonth();
     const targetYear = cell.getUTCFullYear();
 
-
     switch (comparator) {
       case EQ: {
         if (
-          filterDate !== targetDate ||
-          filterMonth !== targetMonth ||
-          filterYear !== targetYear
+          filterDate !== targetDate
+          || filterMonth !== targetMonth
+          || filterYear !== targetYear
         ) {
           valid = false;
         }
@@ -120,12 +121,12 @@ export const filterByDate = _ => (
       case GE: {
         if (targetYear < filterYear) {
           valid = false;
-        } else if (targetYear === filterYear &&
-          targetMonth < filterMonth) {
+        } else if (targetYear === filterYear
+          && targetMonth < filterMonth) {
           valid = false;
-        } else if (targetYear === filterYear &&
-          targetMonth === filterMonth &&
-          targetDate < filterDate) {
+        } else if (targetYear === filterYear
+          && targetMonth === filterMonth
+          && targetDate < filterDate) {
           valid = false;
         }
         break;
@@ -139,21 +140,21 @@ export const filterByDate = _ => (
       case LE: {
         if (targetYear > filterYear) {
           valid = false;
-        } else if (targetYear === filterYear &&
-          targetMonth > filterMonth) {
+        } else if (targetYear === filterYear
+          && targetMonth > filterMonth) {
           valid = false;
-        } else if (targetYear === filterYear &&
-          targetMonth === filterMonth &&
-          targetDate > filterDate) {
+        } else if (targetYear === filterYear
+          && targetMonth === filterMonth
+          && targetDate > filterDate) {
           valid = false;
         }
         break;
       }
       case NE: {
         if (
-          filterDate === targetDate &&
-          filterMonth === targetMonth &&
-          filterYear === targetYear
+          filterDate === targetDate
+          && filterMonth === targetMonth
+          && filterYear === targetYear
         ) {
           valid = false;
         }
@@ -168,15 +169,15 @@ export const filterByDate = _ => (
   });
 };
 
-export const filterByArray = _ => (
+export const filterByArray = (_) => (
   data,
   dataField,
   { filterVal, comparator }
 ) => {
   if (filterVal.length === 0) return data;
   const refinedFilterVal = filterVal
-    .filter(x => _.isDefined(x))
-    .map(x => x.toString());
+    .filter((x) => _.isDefined(x))
+    .map((x) => x.toString());
   return data.filter((row) => {
     const cell = _.get(row, dataField);
     let cellStr = _.isDefined(cell) ? cell.toString() : '';
@@ -184,11 +185,11 @@ export const filterByArray = _ => (
       return refinedFilterVal.indexOf(cellStr) !== -1;
     }
     cellStr = cellStr.toLocaleUpperCase();
-    return refinedFilterVal.some(item => cellStr.indexOf(item.toLocaleUpperCase()) !== -1);
+    return refinedFilterVal.some((item) => cellStr.indexOf(item.toLocaleUpperCase()) !== -1);
   });
 };
 
-export const filterFactory = _ => (filterType) => {
+export const filterFactory = (_) => (filterType) => {
   switch (filterType) {
     case FILTER_TYPE.MULTISELECT:
       return filterByArray(_);

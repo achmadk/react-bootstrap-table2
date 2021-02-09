@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import Const from '../src/const';
 import createStateContext from '../src/state-context';
-import paginationFactory from '../index';
+import paginationFactory from '../src';
 
 const data = [];
 for (let i = 0; i < 100; i += 1) {

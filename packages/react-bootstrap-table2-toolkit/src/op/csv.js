@@ -11,14 +11,13 @@ const csvDefaultOptions = {
   onlyExportSelection: false
 };
 
-export default Base =>
-  class CSVOperation extends Base {
+export default (Base) => class CSVOperation extends Base {
     handleExportCSV = (source) => {
       const { columns, exportCSV, keyField } = this.props;
       const meta = getMetaInfo(columns);
-      const options = exportCSV === true ?
-        csvDefaultOptions :
-        {
+      const options = exportCSV === true
+        ? csvDefaultOptions
+        : {
           ...csvDefaultOptions,
           ...exportCSV
         };
@@ -44,10 +43,10 @@ export default Base =>
         const payload = {};
         this.tableExposedAPIEmitter.emit('get.selected.rows', payload);
         const selections = payload.result;
-        data = data.filter(row => !!selections.find(sel => row[keyField] === sel));
+        data = data.filter((row) => !!selections.find((sel) => row[keyField] === sel));
       }
 
       const content = transform(data, meta, columns, this._, options);
       save(content, options);
     }
-  };
+};

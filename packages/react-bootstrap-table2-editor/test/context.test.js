@@ -69,7 +69,7 @@ describe('CellEditContext', () => {
       >
         <Consumer>
           {
-            cellEditProps => mockBase(cellEditProps)
+            (cellEditProps) => mockBase(cellEditProps)
           }
         </Consumer>
       </CellEditContext.Provider>

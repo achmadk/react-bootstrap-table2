@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint no-return-assign: 0 */
 import React, { Component } from 'react';
 import cs from 'classnames';
@@ -17,11 +18,13 @@ class TextEditor extends Component {
   }
 
   render() {
-    const { defaultValue, didMount, className, autoSelectText, ...rest } = this.props;
+    const {
+      defaultValue, didMount, className, autoSelectText, ...rest
+    } = this.props;
     const editorClass = cs('form-control editor edit-text', className);
     return (
       <input
-        ref={ node => this.text = node }
+        ref={ (node) => this.text = node }
         type="text"
         className={ editorClass }
         { ...rest }

@@ -1,39 +1,47 @@
-.react-bootstrap-table > table > thead > tr > th .filter-label {
-  display: block !important;
-}
+$filter-color: lightgrey !default;
+$filter-font-style: italic !default;
 
-.react-bootstrap-table > table > thead > tr > th .filter {
-  font-weight: normal;
-}
+$date-and-number-filter-input-margin-left: 5px !default;
+$date-and-number-filter-input-width: 67px !default;
 
-.react-bootstrap-table > table > thead > tr > th .select-filter option[value=''],
-.react-bootstrap-table > table > thead > tr > th .select-filter.placeholder-selected,
-.react-bootstrap-table > table > thead > tr > th .filter::-webkit-input-placeholder,
-.react-bootstrap-table > table > thead > tr > th .number-filter-input::-webkit-input-placeholder,
-.react-bootstrap-table > table > thead > tr > th .date-filter-input::-webkit-input-placeholder {
-  color: lightgrey;
-  font-style: italic;
-}
+.react-bootstrap-table > table > thead > tr > th {
+  .filter-label {
+    display: block !important;
+  }
 
-.react-bootstrap-table > table > thead > tr > th .select-filter.placeholder-selected option:not([value='']) {
-  color: initial;
-  font-style: initial;
-}
+  .filter {
+    font-weight: normal;
+  }
 
-.react-bootstrap-table > table > thead > tr > th .number-filter,
-.react-bootstrap-table > table > thead > tr > th .date-filter {
-  display: flex;
-}
+  .select-filter option[value=''],
+  .select-filter.placeholder-selected,
+  .filter::-webkit-input-placeholder,
+  .number-filter-input::-webkit-input-placeholder,
+  .date-filter-input::-webkit-input-placeholder {
+    color: $filter-color;
+    font-style: $filter-font-style;
+  }
 
-.react-bootstrap-table > table > thead > tr > th .number-filter-input,
-.react-bootstrap-table > table > thead > tr > th .date-filter-input {
-  margin-left: 5px;
-  float: left;
-  width: calc(100% - 67px - 5px);
-}
+  .select-filter.placeholder-selected option:not([value='']) {
+    color: initial;
+    font-style: initial;
+  }
 
-.react-bootstrap-table > table > thead > tr > th .number-filter-comparator,
-.react-bootstrap-table > table > thead > tr > th .date-filter-comparator {
-  width: 67px;
-  float: left;
+  .number-filter,
+  .date-filter {
+    display: flex;
+  }
+
+  .number-filter-input,
+  .date-filter-input {
+    margin-left: $date-and-number-filter-input-margin-left;
+    float: left;
+    width: calc(100% - $date-and-number-filter-input-width - $date-and-number-filter-input-margin-left);
+  }
+
+  .number-filter-comparator
+  .date-filter-comparator {
+    width: $date-and-number-filter-input-width;
+    float: left;
+  }
 }

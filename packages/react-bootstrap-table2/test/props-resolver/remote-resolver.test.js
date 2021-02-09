@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prefer-stateless-function: 0 */
 import React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
-import Container from '../../index';
+import Container from '../../src/index';
 // import remoteResolver from '../../src/props-resolver/remote-resolver';
 
 describe('remoteResolver', () => {
@@ -244,7 +245,8 @@ describe('remoteResolver', () => {
       const cellEdit = { rowId, dataField, newValue };
       expect(onTableChangeCB.calledOnce).toBeTruthy();
       expect(onTableChangeCB.calledWith(
-        'cellEdit', wrapper.instance().getNewestState({ cellEdit }))).toBeTruthy();
+        'cellEdit', wrapper.instance().getNewestState({ cellEdit })
+      )).toBeTruthy();
     });
   });
 

@@ -1,9 +1,10 @@
+/* eslint-disable prefer-rest-params */
 /* eslint camelcase: 0 */
 /* eslint no-return-assign: 0 */
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 
-const handleDebounce = (func, wait, immediate) => {
+function handleDebounce(func, wait, immediate) {
   let timeout;
 
   return () => {
@@ -25,7 +26,7 @@ const handleDebounce = (func, wait, immediate) => {
       func.appy(this, arguments);
     }
   };
-};
+}
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -33,6 +34,15 @@ class SearchBar extends React.Component {
     this.state = {
       value: props.searchText
     };
+    this.inputRef = createRef();
+  }
+
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (props.searchText !== state.searchText) {
+      return { value: props.searchText };
+    }
+    return null;
   }
 
   onChangeValue = (e) => {
@@ -42,13 +52,9 @@ class SearchBar extends React.Component {
   onKeyup = () => {
     const { delay, onSearch } = this.props;
     const debounceCallback = handleDebounce(() => {
-      onSearch(this.input.value);
+      onSearch(this.inputRef.current?.value ?? '');
     }, delay);
     debounceCallback();
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({ value: nextProps.searchText });
   }
 
   render() {
@@ -59,6 +65,7 @@ class SearchBar extends React.Component {
       tableId,
       srText
     } = this.props;
+    const { value } = this.state;
 
     return (
       <label
@@ -69,7 +76,7 @@ class SearchBar extends React.Component {
           { srText }
         </span>
         <input
-          ref={ n => this.input = n }
+          ref={ this.inputRef }
           id={ `search-bar-${tableId}` }
           type="text"
           style={ style }
@@ -77,7 +84,7 @@ class SearchBar extends React.Component {
           onKeyUp={ () => this.onKeyup() }
           onChange={ this.onChangeValue }
           className={ `form-control ${className}` }
-          value={ this.state.value }
+          value={ value }
           placeholder={ placeholder || SearchBar.defaultProps.placeholder }
         />
       </label>

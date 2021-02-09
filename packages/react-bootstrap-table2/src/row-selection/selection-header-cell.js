@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/require-default-props: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -23,21 +24,7 @@ CheckBox.propTypes = {
   className: PropTypes.string
 };
 
-export default class SelectionHeaderCell extends Component {
-  static propTypes = {
-    mode: PropTypes.string.isRequired,
-    checkedStatus: PropTypes.string,
-    onAllRowsSelect: PropTypes.func,
-    hideSelectAll: PropTypes.bool,
-    selectionHeaderRenderer: PropTypes.func,
-    headerColumnStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
-  }
-
-  constructor() {
-    super();
-    this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
-  }
-
+class SelectionHeaderCell extends Component {
   /**
    * avoid updating if button is
    * 1. radio
@@ -52,11 +39,10 @@ export default class SelectionHeaderCell extends Component {
     return nextProps.checkedStatus !== checkedStatus;
   }
 
-  handleCheckBoxClick(e) {
+  handleCheckBoxClick = (e) => {
     const { onAllRowsSelect, checkedStatus } = this.props;
-    const isUnSelect =
-      checkedStatus === Const.CHECKBOX_STATUS_CHECKED ||
-      checkedStatus === Const.CHECKBOX_STATUS_INDETERMINATE;
+    const isUnSelect = checkedStatus === Const.CHECKBOX_STATUS_CHECKED
+      || checkedStatus === Const.CHECKBOX_STATUS_INDETERMINATE;
 
     onAllRowsSelect(e, isUnSelect);
   }
@@ -74,6 +60,7 @@ export default class SelectionHeaderCell extends Component {
       headerColumnStyle
     } = this.props;
     if (hideSelectAll) {
+      // eslint-disable-next-line jsx-a11y/control-has-associated-label
       return <th data-row-selection />;
     }
 
@@ -87,9 +74,9 @@ export default class SelectionHeaderCell extends Component {
       attrs.onClick = this.handleCheckBoxClick;
     }
 
-    attrs.style = _.isFunction(headerColumnStyle) ?
-      headerColumnStyle(checkedStatus) :
-      headerColumnStyle;
+    attrs.style = _.isFunction(headerColumnStyle)
+      ? headerColumnStyle(checkedStatus)
+      : headerColumnStyle;
 
     return (
       <BootstrapContext.Consumer>
@@ -120,3 +107,14 @@ export default class SelectionHeaderCell extends Component {
     );
   }
 }
+
+SelectionHeaderCell.propTypes = {
+  mode: PropTypes.string.isRequired,
+  checkedStatus: PropTypes.string,
+  onAllRowsSelect: PropTypes.func,
+  hideSelectAll: PropTypes.bool,
+  selectionHeaderRenderer: PropTypes.func,
+  headerColumnStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+};
+
+export default SelectionHeaderCell;

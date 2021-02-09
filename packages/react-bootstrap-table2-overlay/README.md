@@ -9,6 +9,6 @@ In `react-bootstrap-table2`, you will be easier to custom the loading or lverlay
 [**Here**](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=EmptyTableOverlay) is a quick exmaple for `noDataIndication`.
 
 ## Loading Table
-In the most of case for remote mode, you need the loading animation to tell the user the table is loading or doing some action in the background. Hence, you can lervarge [**`overlay`**](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/table-props.html#overlay-function) prop.
+In the most of case for remote mode, you need the loading animation to tell the user the table is loading or doing some action in the background. Hence, you can leverage [**`overlay`**](https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/table-props.html#overlay-function) prop.
 
 [**Here**](https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html?selectedKind=EmptyTableOverlay) is also a example for `overlay`

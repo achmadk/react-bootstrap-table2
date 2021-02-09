@@ -3,7 +3,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import _ from 'react-bootstrap-table-next/src/utils';
 
-import cellEditFactory from '..';
+import cellEditFactory from '../src/index';
 import { CLICK_TO_CELL_EDIT } from '../src/const';
 import createCellEditContext from '../src/context';
 import bindEditingCell from '../src/editing-cell-consumer';

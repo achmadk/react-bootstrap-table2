@@ -1,36 +1,38 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/require-default-props: 0 */
 /* eslint react/prop-types: 0 */
 /* eslint no-return-assign: 0 */
 /* eslint camelcase: 0 */
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import { PropTypes } from 'prop-types';
 
 import { LIKE, EQ } from '../comparison';
 import { FILTER_TYPE, FILTER_DELAY } from '../const';
 
+function getDefaultValue(props) {
+  if (props.filterState && typeof props.filterState.filterVal !== 'undefined') {
+    return props.filterState.filterVal;
+  }
+  return props.defaultValue;
+}
+
 class TextFilter extends Component {
+  inputRef = createRef()
+
   constructor(props) {
     super(props);
-    this.filter = this.filter.bind(this);
-    this.handleClick = this.handleClick.bind(this);
     this.timeout = null;
-    function getDefaultValue() {
-      if (props.filterState && typeof props.filterState.filterVal !== 'undefined') {
-        return props.filterState.filterVal;
-      }
-      return props.defaultValue;
-    }
     this.state = {
-      value: getDefaultValue()
+      value: getDefaultValue(props)
     };
   }
 
   componentDidMount() {
     const { onFilter, getFilter, column } = this.props;
-    const defaultValue = this.input.value;
+    const defaultValue = this.inputRef.current.value;
 
     if (defaultValue) {
-      onFilter(this.props.column, FILTER_TYPE.TEXT, true)(defaultValue);
+      onFilter(column, FILTER_TYPE.TEXT, true)(defaultValue);
     }
 
     // export onFilter function to allow users to access
@@ -42,24 +44,35 @@ class TextFilter extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.cleanTimer();
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultValue !== this.props.defaultValue) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
+    const { defaultValue } = this.props;
+    if (nextProps.defaultValue !== defaultValue) {
       this.applyFilter(nextProps.defaultValue);
     }
   }
 
-  filter(e) {
+  componentWillUnmount() {
+    this.cleanTimer();
+  }
+
+  handleClick = (e) => {
+    const { onClick } = this.props;
+    e.stopPropagation();
+    if (onClick) {
+      onClick(e);
+    }
+  }
+
+  filter = (e) => {
+    const { onFilter, column, delay } = this.props;
     e.stopPropagation();
     this.cleanTimer();
     const filterValue = e.target.value;
     this.setState(() => ({ value: filterValue }));
     this.timeout = setTimeout(() => {
-      this.props.onFilter(this.props.column, FILTER_TYPE.TEXT)(filterValue);
-    }, this.props.delay);
+      onFilter(column, FILTER_TYPE.TEXT)(filterValue);
+    }, delay);
   }
 
   cleanTimer() {
@@ -68,22 +81,16 @@ class TextFilter extends Component {
     }
   }
 
-  cleanFiltered() {
-    const value = this.props.defaultValue;
-    this.setState(() => ({ value }));
-    this.props.onFilter(this.props.column, FILTER_TYPE.TEXT)(value);
-  }
-
   applyFilter(filterText) {
+    const { onFilter, column } = this.props;
     this.setState(() => ({ value: filterText }));
-    this.props.onFilter(this.props.column, FILTER_TYPE.TEXT)(filterText);
+    onFilter(column, FILTER_TYPE.TEXT)(filterText);
   }
 
-  handleClick(e) {
-    e.stopPropagation();
-    if (this.props.onClick) {
-      this.props.onClick(e);
-    }
+  cleanFiltered() {
+    const { defaultValue: value, onFilter, column } = this.props;
+    this.setState(() => ({ value }));
+    onFilter(column, FILTER_TYPE.TEXT)(value);
   }
 
   render() {
@@ -100,6 +107,7 @@ class TextFilter extends Component {
       filterState,
       ...rest
     } = this.props;
+    const { value } = this.state;
 
     const elmId = `text-filter-column-${dataField}${id ? `-${id}` : ''}`;
 
@@ -108,10 +116,14 @@ class TextFilter extends Component {
         className="filter-label"
         htmlFor={ elmId }
       >
-        <span className="sr-only">Filter by {text}</span>
+        <span className="sr-only">
+          Filter by
+          {text}
+        </span>
         <input
           { ...rest }
-          ref={ n => this.input = n }
+          // ref={ (n) => this.input = n }
+          ref={ this.inputRef }
           type="text"
           id={ elmId }
           className={ `filter text-filter form-control ${className}` }
@@ -119,7 +131,7 @@ class TextFilter extends Component {
           onChange={ this.filter }
           onClick={ this.handleClick }
           placeholder={ placeholder || `Enter ${text}...` }
-          value={ this.state.value }
+          value={ value }
         />
       </label>
     );
@@ -148,6 +160,5 @@ TextFilter.defaultProps = {
   caseSensitive: false,
   id: null
 };
-
 
 export default TextFilter;

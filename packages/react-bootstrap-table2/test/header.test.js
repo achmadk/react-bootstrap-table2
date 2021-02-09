@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import 'jsdom-global/register';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
@@ -72,7 +73,8 @@ describe('Header', () => {
           columns={ columns }
           sortField={ sortField }
           sortOrder={ Const.SORT_ASC }
-        />);
+        />
+      );
     });
 
     it('The HeaderCell should receive correct sorting props', () => {

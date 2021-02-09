@@ -1,3 +1,3 @@
 import ExportCSVButton from './button';
 
-export default { ExportCSVButton };
+export const CSVExport = { ExportCSVButton };

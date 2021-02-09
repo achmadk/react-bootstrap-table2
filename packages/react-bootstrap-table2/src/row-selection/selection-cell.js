@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint
   react/require-default-props: 0
   jsx-a11y/no-noninteractive-element-interactions: 0
@@ -8,38 +10,22 @@ import Const from '../const';
 import _ from '../utils';
 import { BootstrapContext } from '../contexts/bootstrap';
 
-export default class SelectionCell extends Component {
-  static propTypes = {
-    mode: PropTypes.string.isRequired,
-    rowKey: PropTypes.any,
-    selected: PropTypes.bool,
-    onRowSelect: PropTypes.func,
-    disabled: PropTypes.bool,
-    rowIndex: PropTypes.number,
-    tabIndex: PropTypes.number,
-    clickToSelect: PropTypes.bool,
-    selectionRenderer: PropTypes.func,
-    selectColumnStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
-  }
-
-  constructor() {
-    super();
-    this.handleClick = this.handleClick.bind(this);
-  }
-
+class SelectionCell extends Component {
   shouldComponentUpdate(nextProps) {
-    const shouldUpdate =
-      this.props.rowIndex !== nextProps.rowIndex ||
-      this.props.selected !== nextProps.selected ||
-      this.props.disabled !== nextProps.disabled ||
-      this.props.rowKey !== nextProps.rowKey ||
-      this.props.tabIndex !== nextProps.tabIndex ||
-      this.props.selectColumnStyle !== nextProps.selectColumnStyle;
+    const {
+      rowIndex, selected, disabled, rowKey, tabIndex, selectColumnStyle
+    } = this.props;
+    const shouldUpdate = rowIndex !== nextProps.rowIndex
+      || selected !== nextProps.selected
+      || disabled !== nextProps.disabled
+      || rowKey !== nextProps.rowKey
+      || tabIndex !== nextProps.tabIndex
+      || selectColumnStyle !== nextProps.selectColumnStyle;
 
     return shouldUpdate;
   }
 
-  handleClick(e) {
+  handleClick = (e) => {
     const {
       mode: inputType,
       rowKey,
@@ -73,14 +59,14 @@ export default class SelectionCell extends Component {
     const attrs = {};
     if (tabIndex !== -1) attrs.tabIndex = tabIndex;
 
-    attrs.style = _.isFunction(selectColumnStyle) ?
-      selectColumnStyle({
+    attrs.style = _.isFunction(selectColumnStyle)
+      ? selectColumnStyle({
         checked: selected,
         disabled,
         rowIndex,
         rowKey
-      }) :
-      selectColumnStyle;
+      })
+      : selectColumnStyle;
 
     return (
       <BootstrapContext.Consumer>
@@ -111,3 +97,18 @@ export default class SelectionCell extends Component {
     );
   }
 }
+
+SelectionCell.propTypes = {
+  mode: PropTypes.string.isRequired,
+  rowKey: PropTypes.any,
+  selected: PropTypes.bool,
+  onRowSelect: PropTypes.func,
+  disabled: PropTypes.bool,
+  rowIndex: PropTypes.number,
+  tabIndex: PropTypes.number,
+  clickToSelect: PropTypes.bool,
+  selectionRenderer: PropTypes.func,
+  selectColumnStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+};
+
+export default SelectionCell;

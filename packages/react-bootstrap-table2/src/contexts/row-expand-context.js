@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 /* eslint camelcase: 0 */
 /* eslint react/prop-types: 0 */
 import React from 'react';
@@ -8,25 +9,28 @@ import _ from '../utils';
 const RowExpandContext = React.createContext();
 
 class RowExpandProvider extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    data: PropTypes.array.isRequired,
-    keyField: PropTypes.string.isRequired
+  // eslint-disable-next-line react/state-in-constructor
+  state = {
+    // eslint-disable-next-line react/destructuring-assignment
+    expanded: this.props.expandRow.expanded || [],
+    // eslint-disable-next-line react/destructuring-assignment
+    isClosing: this.props.expandRow.isClosing || []
   };
 
-  state = { expanded: this.props.expandRow.expanded || [],
-    isClosing: this.props.expandRow.isClosing || [] };
+  static getDerivedStateFromProps(props) {
+    return {
+      expanded: props?.expandRow?.expanded ?? [],
+      isClosing: props?.expandRow?.isClosing ?? []
+    };
+  }
 
-  onClosed = (closedRow) => {
-    this.setState({ isClosing: this.state.isClosing.filter(value => value !== closedRow) });
-  };
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
+    const { expanded } = this.state;
     if (nextProps.expandRow) {
-      let nextExpanded = [...(nextProps.expandRow.expanded || this.state.expanded)];
+      let nextExpanded = [...(nextProps.expandRow.expanded || expanded)];
       const { nonExpandable = [] } = nextProps.expandRow;
-      nextExpanded = nextExpanded.filter(rowId => !_.contains(nonExpandable, rowId));
-      const isClosing = this.state.expanded.reduce((acc, cur) => {
+      nextExpanded = nextExpanded.filter((rowId) => !_.contains(nonExpandable, rowId));
+      const isClosing = expanded.reduce((acc, cur) => {
         if (!_.contains(nextExpanded, cur)) {
           acc.push(cur);
         }
@@ -39,19 +43,25 @@ class RowExpandProvider extends React.Component {
       }));
     } else {
       this.setState(() => ({
-        expanded: this.state.expanded
+        expanded
       }));
     }
   }
 
+  onClosed = (closedRow) => {
+    // eslint-disable-next-line max-len
+    this.setState(({ isClosing }) => ({ isClosing: isClosing.filter((value) => value !== closedRow) }));
+  };
+
   handleRowExpand = (rowKey, expanded, rowIndex, e) => {
+    const { expanded: expandedState, isClosing: isClosingState } = this.state;
     const { data, keyField, expandRow: { onExpand, onlyOneExpanding, nonExpandable } } = this.props;
     if (nonExpandable && _.contains(nonExpandable, rowKey)) {
       return;
     }
 
-    let currExpanded = [...this.state.expanded];
-    let isClosing = [...this.state.isClosing];
+    let currExpanded = [...expandedState];
+    let isClosing = [...isClosingState];
 
     if (expanded) {
       if (onlyOneExpanding) {
@@ -60,7 +70,7 @@ class RowExpandProvider extends React.Component {
       } else currExpanded.push(rowKey);
     } else {
       isClosing.push(rowKey);
-      currExpanded = currExpanded.filter(value => value !== rowKey);
+      currExpanded = currExpanded.filter((value) => value !== rowKey);
     }
 
     if (onExpand) {
@@ -86,7 +96,7 @@ class RowExpandProvider extends React.Component {
     if (expandAll) {
       currExpanded = expanded.concat(dataOperator.expandableKeys(data, keyField, nonExpandable));
     } else {
-      currExpanded = expanded.filter(s => typeof data.find(d => _.get(d, keyField) === s) === 'undefined');
+      currExpanded = expanded.filter((s) => typeof data.find((d) => _.get(d, keyField) === s) === 'undefined');
     }
 
     if (onExpandAll) {
@@ -97,25 +107,34 @@ class RowExpandProvider extends React.Component {
   };
 
   render() {
-    const { data, keyField } = this.props;
+    const {
+      data, keyField, expandRow, children
+    } = this.props;
+    const { expanded, isClosing } = this.state;
     return (
       <RowExpandContext.Provider
         value={ {
-          ...this.props.expandRow,
-          nonExpandable: this.props.expandRow.nonExpandable,
-          expanded: this.state.expanded,
-          isClosing: this.state.isClosing,
+          ...expandRow,
+          nonExpandable: expandRow.nonExpandable,
+          expanded,
+          isClosing,
           onClosed: this.onClosed,
-          isAnyExpands: dataOperator.isAnyExpands(data, keyField, this.state.expanded),
+          isAnyExpands: dataOperator.isAnyExpands(data, keyField, expanded),
           onRowExpand: this.handleRowExpand,
           onAllRowExpand: this.handleAllRowExpand
         } }
       >
-        { this.props.children }
+        { children }
       </RowExpandContext.Provider>
     );
   }
 }
+
+RowExpandProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  data: PropTypes.array.isRequired,
+  keyField: PropTypes.string.isRequired
+};
 
 export default {
   Provider: RowExpandProvider,

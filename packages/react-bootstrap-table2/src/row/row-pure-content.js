@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 /* eslint react/no-array-index-key: 0 */
 /* eslint no-plusplus: 0 */
@@ -56,8 +57,8 @@ export default class RowPureContent extends React.Component {
       };
 
       if (column.events) {
-        const events = Object.assign({}, column.events);
-        Object.keys(Object.assign({}, column.events)).forEach((key) => {
+        const events = { ...column.events };
+        Object.keys({ ...column.events }).forEach((key) => {
           const originFn = events[key];
           events[key] = (...rest) => originFn(...rest, row, rowIndex);
         });
@@ -72,7 +73,7 @@ export default class RowPureContent extends React.Component {
         cellStyle = _.isFunction(column.style)
           ? column.style(content, row, rowIndex, index)
           : column.style;
-        cellStyle = Object.assign({}, cellStyle) || {};
+        cellStyle = { ...cellStyle } || {};
       }
 
       if (column.title) {
@@ -83,10 +84,9 @@ export default class RowPureContent extends React.Component {
       }
 
       if (column.align) {
-        cellStyle.textAlign =
-          _.isFunction(column.align)
-            ? column.align(content, row, rowIndex, index)
-            : column.align;
+        cellStyle.textAlign = _.isFunction(column.align)
+          ? column.align(content, row, rowIndex, index)
+          : column.align;
       }
 
       if (cellClasses) cellAttrs.className = cellClasses;

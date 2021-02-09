@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/require-default-props: 0 */
 import React from 'react';
 import cs from 'classnames';
@@ -8,7 +9,6 @@ import SortSymbol from './sort/symbol';
 import SortCaret from './sort/caret';
 import _ from './utils';
 import eventDelegater from './cell-event-delegater';
-
 
 class HeaderCell extends eventDelegater(React.Component) {
   render() {
@@ -91,9 +91,9 @@ class HeaderCell extends eventDelegater(React.Component) {
       cellAttrs.className = cs(cellAttrs.className, 'sortable');
 
       if (sorting) {
-        sortSymbol = sortCaretfunc ?
-          sortCaretfunc(sortOrder, column) :
-          <SortCaret order={ sortOrder } />;
+        sortSymbol = sortCaretfunc
+          ? sortCaretfunc(sortOrder, column)
+          : <SortCaret order={ sortOrder } />;
 
         // append customized classes or style if table was sorting based on the current column.
         cellClasses = cs(
@@ -133,9 +133,9 @@ class HeaderCell extends eventDelegater(React.Component) {
       }
     }
 
-    const children = headerFormatter ?
-      headerFormatter(column, index, { sortElement: sortSymbol, filterElement: filterElm }) :
-      text;
+    const children = headerFormatter
+      ? headerFormatter(column, index, { sortElement: sortSymbol, filterElement: filterElm })
+      : text;
 
     if (headerFormatter) {
       return React.createElement('th', cellAttrs, children);

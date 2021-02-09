@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 /* eslint react/no-array-index-key: 0 */
 import React, { Component } from 'react';

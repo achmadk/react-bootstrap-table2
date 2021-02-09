@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, shallow } from 'enzyme';
-import LoadingOverlay from 'react-loading-overlay';
+import LoadingOverlay from 'react-loading-overlay-ts';
 
 import overlayFactory from '../index.js';
 
@@ -16,8 +16,11 @@ describe('overlayFactory', () => {
         </tr>
       </thead>
       <tbody>
-        { [1, 2].map(row => (
-          <tr key={ row }><td>{ row }</td><td>test</td></tr>
+        { [1, 2].map((row) => (
+          <tr key={ row }>
+            <td>{ row }</td>
+            <td>test</td>
+          </tr>
         ))}
       </tbody>
     </table>

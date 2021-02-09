@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
@@ -61,7 +62,8 @@ describe('Cell', () => {
 
     beforeEach(() => {
       wrapper = shallow(
-        <Cell row={ row } columnIndex={ 1 } rowIndex={ rowIndex } column={ column } />);
+        <Cell row={ row } columnIndex={ 1 } rowIndex={ rowIndex } column={ column } />
+      );
     });
 
     afterEach(() => { formatter.reset(); });
@@ -188,7 +190,8 @@ describe('Cell', () => {
             column
           };
           wrapper = shallow(
-            <Cell { ...props } />);
+            <Cell { ...props } />
+          );
         });
 
         it('should return true', () => {
@@ -209,7 +212,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -230,7 +234,8 @@ describe('Cell', () => {
             column
           };
           wrapper = shallow(
-            <Cell { ...props } />);
+            <Cell { ...props } />
+          );
         });
 
         it('should return true', () => {
@@ -249,7 +254,8 @@ describe('Cell', () => {
             column
           };
           wrapper = shallow(
-            <Cell { ...props } />);
+            <Cell { ...props } />
+          );
         });
 
         it('should return true', () => {
@@ -270,7 +276,8 @@ describe('Cell', () => {
             column
           };
           wrapper = shallow(
-            <Cell { ...props } />);
+            <Cell { ...props } />
+          );
         });
 
         it('should return true', () => {
@@ -290,7 +297,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -309,7 +317,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -328,7 +337,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -348,7 +358,8 @@ describe('Cell', () => {
           className: 'test'
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -368,7 +379,8 @@ describe('Cell', () => {
           title: 'test'
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -387,7 +399,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -406,7 +419,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -425,7 +439,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -445,7 +460,8 @@ describe('Cell', () => {
           style: {}
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -464,7 +480,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -483,7 +500,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {
@@ -502,7 +520,8 @@ describe('Cell', () => {
           column
         };
         wrapper = shallow(
-          <Cell { ...props } />);
+          <Cell { ...props } />
+        );
       });
 
       it('should return true', () => {

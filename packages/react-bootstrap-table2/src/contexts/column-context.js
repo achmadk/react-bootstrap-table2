@@ -7,30 +7,30 @@ export default () => {
   const ColumnManagementContext = React.createContext();
 
   class ColumnManagementProvider extends React.Component {
-    static propTypes = {
-      columns: PropTypes.array.isRequired,
-      toggles: PropTypes.object
-    }
-
-    static defaultProps = {
-      toggles: null
-    }
-
     render() {
       let toggleColumn;
-      const { columns, toggles } = this.props;
+      const { columns, toggles, children } = this.props;
       if (toggles) {
-        toggleColumn = columns.filter(column => toggles[column.dataField]);
+        toggleColumn = columns.filter((column) => toggles[column.dataField]);
       } else {
-        toggleColumn = columns.filter(column => !column.hidden);
+        toggleColumn = columns.filter((column) => !column.hidden);
       }
       return (
         <ColumnManagementContext.Provider value={ { columns: toggleColumn } }>
-          { this.props.children }
+          { children }
         </ColumnManagementContext.Provider>
       );
     }
   }
+
+  ColumnManagementProvider.propTypes = {
+    columns: PropTypes.array.isRequired,
+    toggles: PropTypes.object
+  };
+
+  ColumnManagementProvider.defaultProps = {
+    toggles: null
+  };
 
   return {
     Provider: ColumnManagementProvider,

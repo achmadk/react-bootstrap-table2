@@ -1,3 +1,3 @@
 import ToggleList from './toggle-list';
 
-export default { ToggleList };
+export const ColumnToggle = { ToggleList };

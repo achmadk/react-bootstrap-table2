@@ -1,28 +1,32 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 /* eslint camelcase: 0 */
 import React, { Component } from 'react';
 
 import pageResolver from './page-resolver';
 
-export default WrappedComponent =>
-  class PaginationHandler extends pageResolver(Component) {
-    constructor(props) {
-      super(props);
-      this.handleChangePage = this.handleChangePage.bind(this);
-      this.handleChangeSizePerPage = this.handleChangeSizePerPage.bind(this);
-      this.state = this.initialState();
-    }
+export default (WrappedComponent) => class PaginationHandler extends pageResolver(Component) {
+  state = this.initialState();
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-      const { dataSize, currSizePerPage } = nextProps;
-      if (currSizePerPage !== this.props.currSizePerPage || dataSize !== this.props.dataSize) {
-        const totalPages = this.calculateTotalPage(currSizePerPage, dataSize);
-        const lastPage = this.calculateLastPage(totalPages);
-        this.setState({ totalPages, lastPage });
-      }
-    }
+  static getDerivedStateFromProps(props) {
+    const { currSizePerPage, dataSize, pageStartIndex } = props;
+    const totalPages = this.calculateTotalPage(currSizePerPage, dataSize);
+    const lastPage = this.calculateLastPage(totalPages, pageStartIndex);
+    return { totalPages, lastPage };
+  }
 
-    handleChangeSizePerPage(sizePerPage) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
+    const { dataSize, currSizePerPage } = nextProps;
+    if (currSizePerPage !== this.props.currSizePerPage || dataSize !== this.props.dataSize) {
+      const totalPages = this.calculateTotalPage(currSizePerPage, dataSize);
+      const lastPage = this.calculateLastPage(totalPages);
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ totalPages, lastPage });
+    }
+  }
+
+    handleChangeSizePerPage = (sizePerPage) => {
       const { currSizePerPage, onSizePerPageChange } = this.props;
       const selectedSize = typeof sizePerPage === 'string' ? parseInt(sizePerPage, 10) : sizePerPage;
       let { currPage } = this.props;
@@ -34,7 +38,7 @@ export default WrappedComponent =>
       }
     }
 
-    handleChangePage(newPage) {
+    handleChangePage = (newPage) => {
       let page;
       const {
         currPage,
@@ -74,5 +78,4 @@ export default WrappedComponent =>
         />
       );
     }
-  };
-
+};

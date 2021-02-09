@@ -55,7 +55,7 @@ function set(target, field, value, safe = false) {
 function isEmptyObject(obj) {
   if (!_.isObject(obj)) return false;
 
-  const hasOwnProperty = Object.prototype.hasOwnProperty;
+  const { hasOwnProperty } = Object.prototype;
   const keys = Object.keys(obj);
 
   for (let i = 0; i < keys.length; i += 1) {

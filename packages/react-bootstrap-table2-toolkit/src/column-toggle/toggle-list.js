@@ -12,11 +12,11 @@ const ToggleList = ({
   <div className={ `btn-group btn-group-toggle ${className}` } data-toggle="buttons">
     {
       columns
-        .map(column => ({
+        .map((column) => ({
           ...column,
           toggle: toggles[column.dataField]
         }))
-        .map(column => (
+        .map((column) => (
           <button
             type="button"
             key={ column.dataField }

@@ -1,3 +1,5 @@
+$caret-color: #cccccc !default;
+
 .react-bootstrap-table {
 
   table {
@@ -11,12 +13,12 @@
   // bootstrap 3 sort
   th .order > .dropdown > .caret {
     margin: 10px 0 10px 5px;
-    color: #cccccc;
+    color: $caret-color;
   }
 
   th .order > .dropup > .caret {
     margin: 10px 0;
-    color: #cccccc;
+    color: $caret-color;
   }
 
   th > .react-bootstrap-table-sort-order > .caret {

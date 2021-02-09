@@ -1,14 +1,13 @@
 import EventEmitter from 'events';
 import _ from '../utils';
 
-export default ExtendBase =>
-  class RemoteResolver extends ExtendBase {
-    constructor(props) {
-      super(props);
-      this.remoteEmitter = new EventEmitter();
-      this.remoteEmitter.on('paginationChange', this.handleRemotePageChange);
-      this.remoteEmitter.on('isRemotePagination', this.isRemotePagination);
-    }
+export default (ExtendBase) => class RemoteResolver extends ExtendBase {
+  constructor(props) {
+    super(props);
+    this.remoteEmitter = new EventEmitter();
+    this.remoteEmitter.on('paginationChange', this.handleRemotePageChange);
+    this.remoteEmitter.on('isRemotePagination', this.isRemotePagination);
+  }
 
     getNewestState = (state = {}) => {
       let sortOrder;
@@ -20,9 +19,9 @@ export default ExtendBase =>
 
       if (this.sortContext) {
         sortOrder = this.sortContext.state.sortOrder;
-        sortField = this.sortContext.state.sortColumn ?
-          this.sortContext.state.sortColumn.dataField :
-          null;
+        sortField = this.sortContext.state.sortColumn
+          ? this.sortContext.state.sortColumn.dataField
+          : null;
       }
 
       if (this.filterContext) {
@@ -101,4 +100,4 @@ export default ExtendBase =>
     handleRemoteSearchChange = (searchText) => {
       this.props.onTableChange('search', this.getNewestState({ searchText }));
     }
-  };
+};

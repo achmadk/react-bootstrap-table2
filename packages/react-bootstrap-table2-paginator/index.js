@@ -1,27 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import createBaseContext from './src/state-context';
-import createDataContext from './src/data-context';
-import PaginationListStandalone from './src/pagination-list-standalone';
-import SizePerPageDropdownStandalone from './src/size-per-page-dropdown-standalone';
-import PaginationTotalStandalone from './src/pagination-total-standalone';
+import './style/react-bootstrap-table2-paginator.scss';
 
-export default (options = {}) => ({
-  createContext: createDataContext,
-  options
-});
+// import React from 'react';
+// import PropTypes from 'prop-types';
+// import createBaseContext from './src/state-context';
+// import createDataContext from './src/data-context';
+// import PaginationListStandalone from './src/pagination-list-standalone';
+// import SizePerPageDropdownStandalone from './src/size-per-page-dropdown-standalone';
+// import PaginationTotalStandalone from './src/pagination-total-standalone';
 
-const { Provider, Consumer } = createBaseContext();
+// export default (options = {}) => ({
+//   createContext: createDataContext,
+//   options
+// });
 
-const CustomizableProvider = props => (
-  <Provider { ...props }>
-    <Consumer>{ paginationProps => props.children(paginationProps) }</Consumer>
-  </Provider>
-);
+// const { Provider, Consumer } = createBaseContext();
 
-CustomizableProvider.propTypes = {
-  children: PropTypes.func.isRequired
-};
+// const CustomizableProvider = props => (
+//   <Provider { ...props }>
+//     <Consumer>{ paginationProps => props.children(paginationProps) }</Consumer>
+//   </Provider>
+// );
 
-export const PaginationProvider = CustomizableProvider;
-export { PaginationListStandalone, SizePerPageDropdownStandalone, PaginationTotalStandalone };
+// CustomizableProvider.propTypes = {
+//   children: PropTypes.func.isRequired
+// };
+
+// export const PaginationProvider = CustomizableProvider;
+// export { PaginationListStandalone, SizePerPageDropdownStandalone, PaginationTotalStandalone };

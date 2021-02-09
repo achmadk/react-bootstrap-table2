@@ -2,12 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const PaginationTotal = (props) => {
-  if (props.paginationTotalRenderer) {
-    return props.paginationTotalRenderer(props.from, props.to, props.dataSize);
+  const {
+    paginationTotalRenderer, from, to, dataSize
+  } = props;
+  if (paginationTotalRenderer) {
+    return paginationTotalRenderer(from, to, dataSize);
   }
   return (
     <span className="react-bootstrap-table-pagination-total">
-      &nbsp;Showing rows { props.from } to&nbsp;{ props.to } of&nbsp;{ props.dataSize }
+      &nbsp;Showing rows
+      {' '}
+      { from }
+      {' '}
+      to&nbsp;
+      { to }
+      {' '}
+      of&nbsp;
+      { dataSize }
     </span>
   );
 };

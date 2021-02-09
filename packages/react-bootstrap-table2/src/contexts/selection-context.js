@@ -10,33 +10,46 @@ import { getSelectionSummary } from '../store/selection';
 
 const SelectionContext = React.createContext();
 class SelectionProvider extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    data: PropTypes.array.isRequired,
-    keyField: PropTypes.string.isRequired
-  }
-
   constructor(props) {
     super(props);
-    this.selected = props.selectRow.selected || [];
+    // this.selected = props.selectRow.selected || [];
+    this.state = {
+      selected: props?.selectRow?.selected ?? []
+    };
+  }
+
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      selected: nextProps?.selectRow?.selected ?? []
+    };
+  }
+
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
+    // eslint-disable-next-line react/destructuring-assignment
+    if (nextProps.selectRow !== this.props?.selectRow) {
+      // this.selected = nextProps.selectRow.selected || this.selected;
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState(({ selected }) => ({
+        selected: nextProps?.selectRow?.selected ?? selected
+      }));
+    }
   }
 
   // exposed API
   getSelected() {
-    return this.selected;
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.selectRow) {
-      this.selected = nextProps.selectRow.selected || this.selected;
-    }
+    // return this.selected;
+    // eslint-disable-next-line react/destructuring-assignment
+    return this.state.selected;
   }
 
   handleRowSelect = (rowKey, checked, rowIndex, e) => {
     const { data, keyField, selectRow: { mode, onSelect } } = this.props;
+    const { selected } = this.state;
     const { ROW_SELECT_SINGLE } = Const;
 
-    let currSelected = [...this.selected];
+    // let currSelected = [...this.selected];
+    let currSelected = [...selected];
 
     let result = true;
     if (onSelect) {
@@ -50,11 +63,15 @@ class SelectionProvider extends React.Component {
       } else if (checked) { // when select mode is checkbox
         currSelected.push(rowKey);
       } else {
-        currSelected = currSelected.filter(value => value !== rowKey);
+        currSelected = currSelected.filter((value) => value !== rowKey);
       }
     }
-    this.selected = currSelected;
-    this.forceUpdate();
+    // this.selected = currSelected;
+    this.setState({
+      selected: currSelected
+    }, () => {
+      this.forceUpdate();
+    });
   }
 
   handleAllRowsSelect = (e, isUnSelect) => {
@@ -66,14 +83,15 @@ class SelectionProvider extends React.Component {
         nonSelectable
       }
     } = this.props;
-    const { selected } = this;
+    // const { selected } = this;
+    const { selected } = this.state;
 
     let currSelected;
 
     if (!isUnSelect) {
       currSelected = selected.concat(dataOperator.selectableKeys(data, keyField, nonSelectable));
     } else {
-      currSelected = selected.filter(s => typeof data.find(d => _.get(d, keyField) === s) === 'undefined');
+      currSelected = selected.filter((s) => typeof data.find((d) => _.get(d, keyField) === s) === 'undefined');
     }
 
     let result;
@@ -91,18 +109,26 @@ class SelectionProvider extends React.Component {
         currSelected = result;
       }
     }
-    this.selected = currSelected;
-    this.forceUpdate();
+    // this.selected = currSelected;
+    this.setState({
+      selected: currSelected
+    }, () => {
+      this.forceUpdate();
+    });
   }
 
   render() {
     const {
+      data, keyField, selectRow, children
+    } = this.props;
+    const { selected } = this.state;
+    const {
       allRowsSelected,
       allRowsNotSelected
     } = getSelectionSummary(
-      this.props.data,
-      this.props.keyField,
-      this.selected
+      data,
+      keyField,
+      selected
     );
 
     let checkedStatus;
@@ -115,8 +141,9 @@ class SelectionProvider extends React.Component {
     return (
       <SelectionContext.Provider
         value={ {
-          ...this.props.selectRow,
-          selected: this.selected,
+          ...selectRow,
+          // selected: this.selected,
+          selected,
           onRowSelect: this.handleRowSelect,
           onAllRowsSelect: this.handleAllRowsSelect,
           allRowsSelected,
@@ -124,11 +151,17 @@ class SelectionProvider extends React.Component {
           checkedStatus
         } }
       >
-        { this.props.children }
+        { children }
       </SelectionContext.Provider>
     );
   }
 }
+
+SelectionProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  data: PropTypes.array.isRequired,
+  keyField: PropTypes.string.isRequired
+};
 
 export default {
   Provider: SelectionProvider,

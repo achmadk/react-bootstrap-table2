@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint class-methods-use-this: 0 */
 /* eslint react/prop-types: 0 */
 /* eslint no-plusplus: 0 */
@@ -11,17 +12,7 @@ import eventDelegater from './event-delegater';
 import RowPureContent from './row-pure-content';
 import Const from '../const';
 
-export default class RowAggregator extends shouldUpdater(eventDelegater(React.Component)) {
-  static propTypes = {
-    attrs: PropTypes.object,
-    style: PropTypes.object
-  }
-
-  static defaultProps = {
-    attrs: {},
-    style: {}
-  }
-
+class RowAggregator extends shouldUpdater(eventDelegater(React.Component)) {
   constructor(props) {
     super(props);
     this.clickNum = 0;
@@ -31,12 +22,12 @@ export default class RowAggregator extends shouldUpdater(eventDelegater(React.Co
 
   shouldComponentUpdate(nextProps) {
     if (
-      this.props.selected !== nextProps.selected ||
-      this.props.expanded !== nextProps.expanded ||
-      this.props.expandable !== nextProps.expandable ||
-      this.props.selectable !== nextProps.selectable ||
-      this.props.selectRow.hideSelectColumn !== nextProps.selectRow.hideSelectColumn ||
-      this.shouldUpdatedBySelfProps(nextProps)
+      this.props.selected !== nextProps.selected
+      || this.props.expanded !== nextProps.expanded
+      || this.props.expandable !== nextProps.expandable
+      || this.props.selectable !== nextProps.selectable
+      || this.props.selectRow.hideSelectColumn !== nextProps.selectRow.hideSelectColumn
+      || this.shouldUpdatedBySelfProps(nextProps)
     ) {
       this.shouldUpdateRowContent = this.shouldRowContentUpdate(nextProps);
       return true;
@@ -144,3 +135,15 @@ export default class RowAggregator extends shouldUpdater(eventDelegater(React.Co
     );
   }
 }
+
+RowAggregator.propTypes = {
+  attrs: PropTypes.object,
+  style: PropTypes.object
+};
+
+RowAggregator.defaultProps = {
+  attrs: {},
+  style: {}
+};
+
+export default RowAggregator;

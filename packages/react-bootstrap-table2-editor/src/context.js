@@ -1,4 +1,4 @@
-/* eslint disable-next-line: 0 */
+/* eslint-disable react/state-in-constructor */
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
 /* eslint camelcase: 0 */
@@ -12,43 +12,30 @@ const CellEditContext = React.createContext();
 export default (
   _,
   dataOperator,
-  isRemoteCellEdit,
+  isRemoteCellEdit = () => false,
   handleCellChange
 ) => {
   class CellEditProvider extends React.Component {
-    static propTypes = {
-      data: PropTypes.array.isRequired,
-      selectRow: PropTypes.object,
-      options: PropTypes.shape({
-        mode: PropTypes.oneOf([CLICK_TO_CELL_EDIT, DBCLICK_TO_CELL_EDIT]).isRequired,
-        onErrorMessageDisappear: PropTypes.func,
-        blurToSave: PropTypes.bool,
-        beforeSaveCell: PropTypes.func,
-        afterSaveCell: PropTypes.func,
-        onStartEdit: PropTypes.func,
-        nonEditableRows: PropTypes.func,
-        timeToCloseMessage: PropTypes.number,
-        errorMessage: PropTypes.any
-      })
-    }
+    // constructor(props) {
+    //   super(props);
+    //   // this.doUpdate = this.doUpdate.bind(this);
+    //   // this.startEditing = this.startEditing.bind(this);
+    //   this.escapeEditing = this.escapeEditing.bind(this);
+    //   // this.completeEditing = this.completeEditing.bind(this);
+    // }
 
-    constructor(props) {
-      super(props);
-      this.doUpdate = this.doUpdate.bind(this);
-      this.startEditing = this.startEditing.bind(this);
-      this.escapeEditing = this.escapeEditing.bind(this);
-      this.completeEditing = this.completeEditing.bind(this);
-      this.handleCellUpdate = this.handleCellUpdate.bind(this);
-      this.state = {
-        ridx: null,
-        cidx: null,
-        message: null
-      };
-    }
+    state = {
+      ridx: null,
+      cidx: null,
+      message: null
+    };
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
+    // UNSAFE_componentWillReceiveProps(nextProps) {
+    // static getDerivedStateFromProps(nextProps) {
+    componentDidUpdate(nextProps) {
       if (nextProps.cellEdit && isRemoteCellEdit()) {
         if (nextProps.cellEdit.options.errorMessage) {
+          // eslint-disable-next-line react/no-did-update-set-state
           this.setState(() => ({
             message: nextProps.cellEdit.options.errorMessage
           }));
@@ -58,7 +45,7 @@ export default (
       }
     }
 
-    handleCellUpdate(row, column, newValue) {
+    handleCellUpdate = (row, column, newValue) => {
       const newValueWithType = dataOperator.typeConvert(column.type, newValue);
       const { cellEdit } = this.props;
       const { beforeSaveCell } = cellEdit.options;
@@ -85,7 +72,7 @@ export default (
       this.doUpdate(row, column, newValueWithType);
     }
 
-    doUpdate(row, column, newValue) {
+    doUpdate = (row, column, newValue) => {
       const { keyField, cellEdit, data } = this.props;
       const { afterSaveCell } = cellEdit.options;
       const rowId = _.get(row, keyField);
@@ -99,7 +86,7 @@ export default (
       }
     }
 
-    completeEditing() {
+    completeEditing = () => {
       this.setState(() => ({
         ridx: null,
         cidx: null,
@@ -107,7 +94,7 @@ export default (
       }));
     }
 
-    startEditing(ridx, cidx) {
+    startEditing = (ridx, cidx) => {
       const editing = () => {
         this.setState(() => ({
           ridx,
@@ -119,7 +106,7 @@ export default (
       if (!selectRow || (selectRow.clickToEdit || !selectRow.clickToSelect)) editing();
     }
 
-    escapeEditing() {
+    escapeEditing = () => {
       this.setState(() => ({
         ridx: null,
         cidx: null
@@ -131,7 +118,8 @@ export default (
         cellEdit: {
           options: { nonEditableRows, errorMessage, ...optionsRest },
           ...cellEditRest
-        }
+        },
+        children
       } = this.props;
 
       const newCellEdit = {
@@ -148,14 +136,30 @@ export default (
         <CellEditContext.Provider
           value={ { ...newCellEdit } }
         >
-          { this.props.children }
+          { children }
         </CellEditContext.Provider>
       );
     }
   }
+  CellEditProvider.propTypes = {
+    data: PropTypes.array.isRequired,
+    selectRow: PropTypes.object,
+    options: PropTypes.shape({
+      mode: PropTypes.oneOf([CLICK_TO_CELL_EDIT, DBCLICK_TO_CELL_EDIT]).isRequired,
+      onErrorMessageDisappear: PropTypes.func,
+      blurToSave: PropTypes.bool,
+      beforeSaveCell: PropTypes.func,
+      afterSaveCell: PropTypes.func,
+      onStartEdit: PropTypes.func,
+      nonEditableRows: PropTypes.func,
+      timeToCloseMessage: PropTypes.number,
+      errorMessage: PropTypes.any
+    })
+  };
+
   return {
     Provider: CellEditProvider
   };
 };
 
-export const Consumer = CellEditContext.Consumer;
+export const { Consumer } = CellEditContext;

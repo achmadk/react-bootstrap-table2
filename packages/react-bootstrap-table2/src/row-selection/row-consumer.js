@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 import React from 'react';
 import cs from 'classnames';
@@ -70,7 +71,7 @@ export default (Component) => {
   function withConsumer(props) {
     return (
       <SelectionContext.Consumer>
-        { selectRow => renderWithSelection(props, selectRow) }
+        { (selectRow) => renderWithSelection(props, selectRow) }
       </SelectionContext.Consumer>
     );
   }

@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import cs from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 
-const ExpandRow = ({ children, expanded, onClosed, className, ...rest }) => (
+const ExpandRow = ({
+  children, expanded, onClosed, className, ...rest
+}) => (
   <tr>
     <td className={ cs('reset-expansion-style', className) } { ...rest }>
       <CSSTransition

@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/prop-types: 0 */
 import React from 'react';
 
-export default WrappedComponent => ({
+export default (WrappedComponent) => ({
   page,
   sizePerPage,
   ...rest

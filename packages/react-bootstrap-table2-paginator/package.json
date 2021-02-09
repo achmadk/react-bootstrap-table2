@@ -1,11 +1,24 @@
 {
-  "name": "react-bootstrap-table2-paginator",
-  "version": "2.1.2",
+  "name": "react-bootstrap-table2-paginator-esm",
+  "version": "0.1.0",
   "description": "it's the pagination addon for react-bootstrap-table2",
-  "main": "./lib/index.js",
+  "main": "dist/react-bootstrap-table2-paginator-esm.cjs.js",
+  "module": "dist/react-bootstrap-table2-paginator-esm.esm.js",
+  "browser": {
+    "./dist/react-bootstrap-table2-paginator-esm.cjs.js": "./dist/react-bootstrap-table2-paginator-esm.browser.cjs.js",
+    "./dist/react-bootstrap-table2-paginator-esm.esm.js": "./dist/react-bootstrap-table2-paginator-esm.browser.esm.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/react-bootstrap-table2-paginator-esm.esm.js",
+      "require": "./dist/react-bootstrap-table2-paginator-esm.cjs.js"
+    }
+  },
+  "typings": "types/index.d.ts",
+  "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/react-bootstrap-table/react-bootstrap-table2.git"
+    "url": "git+https://github.com/achmadk/react-bootstrap-table2.git"
   },
   "license": "MIT",
   "keywords": [
@@ -17,8 +30,9 @@
     "react-component"
   ],
   "files": [
-    "lib/",
-    "dist/"
+    "style/",
+    "dist/",
+    "types/"
   ],
   "tags": [
     "react"
@@ -34,11 +48,26 @@
       "name": "Chun-MingChen",
       "email": "nick830314@gmail.com",
       "url": "https://github.com/Chun-MingChen"
+    },
+    {
+      "name": "Achmad Kurnianto",
+      "email": "achmad.kurnianto@gmail.com",
+      "url": "https://github.com/achmadk"
     }
   ],
   "peerDependencies": {
-    "prop-types": "^15.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-bootstrap-table-next-esm": "^0.1.0",
+    "react-dom": "^17.0.1"
+  },
+  "preconstruct": {
+    "entrypoints": [
+      "index.js"
+    ]
+  },
+  "dependencies": {
+    "classnames": "2.2.6",
+    "events": "3.2.0"
   }
 }

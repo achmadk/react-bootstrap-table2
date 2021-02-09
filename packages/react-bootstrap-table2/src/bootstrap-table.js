@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint camelcase: 0 */
 /* eslint arrow-body-style: 0 */
 
@@ -20,7 +21,8 @@ class BootstrapTable extends PropsBaseResolver(Component) {
     this.validateProps();
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  // UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.onDataSizeChange && !nextProps.pagination) {
       if (nextProps.data.length !== this.props.data.length) {
         nextProps.onDataSizeChange({ dataSize: nextProps.data.length });
@@ -79,9 +81,9 @@ class BootstrapTable extends PropsBaseResolver(Component) {
       [bootstrap4 ? 'table-sm' : 'table-condensed']: condensed
     }, classes);
 
-    const hasFilters = columns.some(col => col.filter || col.filterRenderer);
+    const hasFilters = columns.some((col) => col.filter || col.filterRenderer);
 
-    const hasFooter = _.filter(columns, col => _.has(col, 'footer')).length > 0;
+    const hasFooter = _.filter(columns, (col) => _.has(col, 'footer')).length > 0;
 
     const tableCaption = (
       caption && <Caption bootstrap4={ bootstrap4 }>{ caption }</Caption>

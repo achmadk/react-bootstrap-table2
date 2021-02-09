@@ -15,14 +15,13 @@ import CheckBoxEditor from '../src/checkbox-editor';
 import EditorIndicator from '../src/editor-indicator';
 
 const EditingCell = editingCellFactory(_);
-const TableRowWrapper = props => (
+const TableRowWrapper = ({ children }) => (
   <table>
     <tbody>
-      <tr>{ props.children }</tr>
+      <tr>{ children }</tr>
     </tbody>
   </table>
 );
-
 
 describe('EditingCell', () => {
   let wrapper;

@@ -2,7 +2,7 @@ import 'jsdom-global/register';
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import paginationFactory from '../index';
+import paginationFactory from '../src';
 import Const from '../src/const';
 import createStateContext from '../src/data-context';
 import Pagination from '../src/pagination';

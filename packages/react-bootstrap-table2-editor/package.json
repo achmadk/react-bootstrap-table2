@@ -1,8 +1,21 @@
 {
-  "name": "react-bootstrap-table2-editor",
-  "version": "1.4.0",
+  "name": "react-bootstrap-table2-editor-esm",
+  "version": "0.1.0",
   "description": "it's the editor addon for react-bootstrap-table2",
-  "main": "./lib/index.js",
+  "main": "dist/react-bootstrap-table2-editor-esm.cjs.js",
+  "module": "dist/react-bootstrap-table2-editor-esm.esm.js",
+  "typings": "types/index.d.ts",
+  "browser": {
+    "./dist/react-bootstrap-table2-editor-esm.cjs.js": "./dist/react-bootstrap-table2-editor-esm.browser.cjs.js",
+    "./dist/react-bootstrap-table2-editor-esm.esm.js": "./dist/react-bootstrap-table2-editor-esm.browser.esm.js"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/react-bootstrap-table2-editor-esm.cjs.js",
+      "import": "./dist/react-bootstrap-table2-editor-esm.esm.js"
+    }
+  },
+  "sideEffects": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,8 +33,8 @@
     "react-component"
   ],
   "files": [
-    "lib/",
-    "dist/"
+    "dist/",
+    "types/"
   ],
   "tags": [
     "react"
@@ -40,8 +53,16 @@
     }
   ],
   "peerDependencies": {
-    "prop-types": "^15.0.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "preconstruct": {
+    "entrypoints": [
+      "index.js"
+    ]
+  },
+  "dependencies": {
+    "classnames": "2.2.6"
   }
 }

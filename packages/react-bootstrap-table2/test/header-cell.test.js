@@ -148,7 +148,8 @@ describe('HeaderCell', () => {
     it('should call custom headerFormatter correctly', () => {
       expect(formatter.callCount).toBe(1);
       expect(formatter.calledWith(
-        column, index, { sortElement: undefined, filterElement: undefined })).toBe(true);
+        column, index, { sortElement: undefined, filterElement: undefined }
+      )).toBe(true);
     });
   });
 
@@ -349,7 +350,6 @@ describe('HeaderCell', () => {
           'data-test': 'test'
         };
 
-
         beforeEach(() => {
           headerAttrsCallBack = sinon.stub()
             .withArgs(column, index)
@@ -422,7 +422,6 @@ describe('HeaderCell', () => {
       expect(wrapper.find('th').prop('aria-label')).toBe('ID sortable');
     });
 
-
     describe('and sorting prop is false', () => {
       it('header should render SortSymbol as default', () => {
         expect(wrapper.find(SortSymbol).length).toBe(1);
@@ -456,7 +455,8 @@ describe('HeaderCell', () => {
         describe(`and sortOrder is ${order}`, () => {
           beforeEach(() => {
             wrapper = shallow(
-              <HeaderCell column={ column } index={ index } sortOrder={ order } sorting />);
+              <HeaderCell column={ column } index={ index } sortOrder={ order } sorting />
+            );
           });
 
           it('should describe sort order in aria-label', () => {
@@ -507,7 +507,8 @@ describe('HeaderCell', () => {
                 index={ index }
                 sorting
                 sortOrder={ order }
-              />);
+              />
+            );
           });
 
           it('should append classes correctly', () => {
@@ -536,7 +537,8 @@ describe('HeaderCell', () => {
                 index={ index }
                 sorting
                 sortOrder={ order }
-              />);
+              />
+            );
           });
 
           it('should append classes correctly', () => {
@@ -565,7 +567,8 @@ describe('HeaderCell', () => {
                   sorting
                   sortOrder={ order }
                   isLastSorting
-                />);
+                />
+              );
 
               expect(classesCallBack.callCount).toBe(1);
               expect(classesCallBack.calledWith(column, order, isLastSorting, index)).toBe(true);
@@ -639,7 +642,8 @@ describe('HeaderCell', () => {
                 index={ index }
                 sorting
                 sortOrder={ order }
-              />);
+              />
+            );
           });
 
           it('should append style correctly', () => {
@@ -664,7 +668,8 @@ describe('HeaderCell', () => {
                   sorting
                   sortOrder={ order }
                   isLastSorting
-                />);
+                />
+              );
 
               expect(styleCallBack.callCount).toBe(1);
               expect(styleCallBack.calledWith(column, order, isLastSorting, index)).toBe(true);
@@ -733,7 +738,8 @@ describe('HeaderCell', () => {
           }
         };
         wrapper = shallow(
-          <HeaderCell column={ column } index={ index } onSort={ onSortCallBack } />);
+          <HeaderCell column={ column } index={ index } onSort={ onSortCallBack } />
+        );
       });
 
       it('custom event hook should still be called when triggering sorting', () => {
@@ -810,7 +816,8 @@ describe('HeaderCell', () => {
           index={ index }
           filterPosition="inline"
           onExternalFilter={ onExternalFilter }
-        />);
+        />
+      );
     });
 
     it('should render successfully', () => {

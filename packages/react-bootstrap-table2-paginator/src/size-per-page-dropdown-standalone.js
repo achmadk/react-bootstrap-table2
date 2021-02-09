@@ -1,10 +1,11 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import SizePerPageDropdown from './size-per-page-dropdown';
 import standaloneAdapter from './standalone-adapter';
 import paginationHandler from './pagination-handler';
 import sizePerPageDropdownAdapter from './size-per-page-dropdown-adapter';
 
-const SizePerPageDropdownStandalone = props => (
+const SizePerPageDropdownStandalone = (props) => (
   <SizePerPageDropdown { ...props } />
 );
 

@@ -1,14 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint no-return-assign: 0 */
 import React, { Component } from 'react';
 import cs from 'classnames';
 import PropTypes from 'prop-types';
 
 class TextAreaEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
-
   componentDidMount() {
     const { defaultValue, didMount, autoSelectText } = this.props;
     this.text.value = defaultValue;
@@ -21,19 +17,22 @@ class TextAreaEditor extends Component {
     return this.text.value;
   }
 
-  handleKeyDown(e) {
+  handleKeyDown = (e) => {
+    const { onKeyDown } = this.props;
     if (e.keyCode === 13 && !e.shiftKey) return;
-    if (this.props.onKeyDown) {
-      this.props.onKeyDown(e);
+    if (onKeyDown) {
+      onKeyDown(e);
     }
   }
 
   render() {
-    const { defaultValue, didMount, className, autoSelectText, ...rest } = this.props;
+    const {
+      defaultValue, didMount, className, autoSelectText, ...rest
+    } = this.props;
     const editorClass = cs('form-control editor edit-textarea', className);
     return (
       <textarea
-        ref={ node => this.text = node }
+        ref={ (node) => this.text = node }
         type="textarea"
         className={ editorClass }
         { ...rest }
