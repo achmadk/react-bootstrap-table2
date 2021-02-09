@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-empty-interface */
 /// <reference types="node" />
 import { Context as ReactContext, Component, ReactNode, ReactElement, CSSProperties, MouseEventHandler, FC, ButtonHTMLAttributes } from 'react';
 import { DefaultTableData, BootstrapTableColumns, BootstrapTableProps, ReactBootstrapTableUtilities, EventEmitter } from 'react-bootstrap-table-next-esm';
@@ -112,6 +112,7 @@ export interface ToolkitContextProviderPropsExportCSV extends Partial<ToolkitCon
 interface ToolkitContextProviderOptionalProps<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> {
     search: boolean | Partial<ToolkitContextProviderPropsSearch<TableData, Columns>>;
     exportCSV: boolean | Partial<ToolkitContextProviderPropsExportCSV>;
+    columnToggle: boolean;
 }
 interface ToggleListPropsOptional {
     btnClassName: string;
@@ -138,8 +139,8 @@ export declare type ToolkitContext = {
     Provider: Component<ToolkitContextProviderProps>;
     Consumer: ToolkitContextType['Consumer'];
 };
-export interface ToolkitProviderProps<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> extends ToolkitContextProviderProps<TableData, Columns> {
-    children(props: ToolkitContextProviderProps<TableData, Columns>): ReactNode;
+export interface ToolkitProviderProps<SearchProps extends ToolkitContextValueSearchProps = ToolkitContextValueSearchProps, CSVSource = any, CSVProps extends ToolkitContextValueCSVProps<CSVSource> = ToolkitContextValueCSVProps<CSVSource>, TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>, ColumnToggleProps extends ToolkitContextValueColumnToggleProps<TableData, Columns> = ToolkitContextValueColumnToggleProps<TableData, Columns>, BaseProps extends ToolkitContextValueBaseProps<TableData, Columns, SearchProps> = ToolkitContextValueBaseProps<TableData, Columns, SearchProps>> extends ToolkitContextProviderProps<TableData, Columns> {
+    children(props: ToolkitContextValue<SearchProps, CSVSource, CSVProps, TableData, Columns, ColumnToggleProps, BaseProps>): ReactNode;
 }
-declare function ToolkitProvider<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>>(props: ToolkitProviderProps<TableData, Columns>): ReactElement<ToolkitProviderProps<TableData, Columns>>;
+declare function ToolkitProvider<SearchProps extends ToolkitContextValueSearchProps = ToolkitContextValueSearchProps, CSVSource = any, CSVProps extends ToolkitContextValueCSVProps<CSVSource> = ToolkitContextValueCSVProps<CSVSource>, TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>, ColumnToggleProps extends ToolkitContextValueColumnToggleProps<TableData, Columns> = ToolkitContextValueColumnToggleProps<TableData, Columns>, BaseProps extends ToolkitContextValueBaseProps<TableData, Columns, SearchProps> = ToolkitContextValueBaseProps<TableData, Columns, SearchProps>>(props: ToolkitProviderProps<SearchProps, CSVSource, CSVProps, TableData, Columns, ColumnToggleProps, BaseProps>): ReactElement<ToolkitProviderProps<SearchProps, CSVSource, CSVProps, TableData, Columns, ColumnToggleProps, BaseProps>>;
 export default ToolkitProvider;
