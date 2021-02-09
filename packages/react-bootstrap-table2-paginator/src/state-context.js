@@ -83,23 +83,23 @@ class StateProvider extends React.Component {
   }
 
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    const { custom } = nextProps.pagination.options;
+  componentDidUpdate() {
+    const { custom } = this.props?.pagination?.options ?? { custom: false };
 
     // user should align the page when the page is not fit to the data size when remote enable
     if (this.isRemotePagination() || custom) {
-      // if (typeof nextProps.pagination.options.page !== 'undefined') {
-      //   this.currPage = nextProps.pagination.options.page;
+      // if (typeof this.props.pagination.options.page !== 'undefined') {
+      //   this.currPage = this.props.pagination.options.page;
       // }
-      // if (typeof nextProps.pagination.options.sizePerPage !== 'undefined') {
-      //   this.currSizePerPage = nextProps.pagination.options.sizePerPage;
+      // if (typeof this.props.pagination.options.sizePerPage !== 'undefined') {
+      //   this.currSizePerPage = this.props.pagination.options.sizePerPage;
       // }
-      // if (typeof nextProps.pagination.options.totalSize !== 'undefined') {
-      //   this.dataSize = nextProps.pagination.options.totalSize;
+      // if (typeof this.props.pagination.options.totalSize !== 'undefined') {
+      //   this.dataSize = this.props.pagination.options.totalSize;
       // }
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
-        ...updateStateFromProps(nextProps)
+        ...updateStateFromProps(this.props)
       });
     }
   }

@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/state-in-constructor */
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
@@ -32,12 +33,12 @@ export default (
 
     // UNSAFE_componentWillReceiveProps(nextProps) {
     // static getDerivedStateFromProps(nextProps) {
-    componentDidUpdate(nextProps) {
-      if (nextProps.cellEdit && isRemoteCellEdit()) {
-        if (nextProps.cellEdit.options.errorMessage) {
+    componentDidUpdate() {
+      if (this.props.cellEdit && isRemoteCellEdit()) {
+        if (this.props?.cellEdit?.options?.errorMessage) {
           // eslint-disable-next-line react/no-did-update-set-state
           this.setState(() => ({
-            message: nextProps.cellEdit.options.errorMessage
+            message: this.props.cellEdit.options.errorMessage
           }));
         } else {
           this.escapeEditing();

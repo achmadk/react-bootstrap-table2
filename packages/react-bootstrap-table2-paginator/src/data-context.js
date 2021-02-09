@@ -15,25 +15,25 @@ const { Provider } = createBaseContext();
 const PaginationDataContext = React.createContext();
 
 class PaginationDataProvider extends Provider {
-  componentDidUpdate(nextProps) {
-    super.componentDidUpdate(nextProps);
-    const { currSizePerPage } = this.state;
-    const { custom, onPageChange } = nextProps.pagination.options;
+  componentDidUpdate(prevProps, prevState) {
+    super.componentDidUpdate(this.props);
+    const { currSizePerPage } = prevState;
+    const { custom, onPageChange } = this.props.pagination.options;
 
-    const pageStartIndex = typeof nextProps.pagination.options.pageStartIndex !== 'undefined'
-      ? nextProps.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
+    const pageStartIndex = typeof this.props.pagination.options.pageStartIndex !== 'undefined'
+      ? this.props.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
 
     // user should align the page when the page is not fit to the data size when remote enable
     if (!this.isRemotePagination() && !custom) {
       const newPage = alignPage(
-        nextProps.data.length,
         this.props.data.length,
-        this.state.currPage,
+        prevProps.data.length,
+        prevState.currPage,
         currSizePerPage,
         pageStartIndex
       );
 
-      if (this.state.currPage !== newPage) {
+      if (prevState.currPage !== newPage) {
         if (onPageChange) {
           onPageChange(newPage, currSizePerPage);
         }
@@ -41,8 +41,8 @@ class PaginationDataProvider extends Provider {
         this.setState({ currPage: newPage });
       }
     }
-    if (nextProps.onDataSizeChange && nextProps.data.length !== this.props.data.length) {
-      nextProps.onDataSizeChange({ dataSize: nextProps.data.length });
+    if (this.props.onDataSizeChange && this.props.data.length !== prevProps.data.length) {
+      this.props.onDataSizeChange({ dataSize: this.props.data.length });
     }
   }
 

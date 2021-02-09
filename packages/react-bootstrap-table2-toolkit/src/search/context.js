@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-did-update-set-state */
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
@@ -33,30 +34,65 @@ export default (options = {
       this.state = { data: initialData };
     }
 
-    componentDidUpdate(nextProps) {
-    // static getDerivedStateFromProps(nextProps) {
-      const { searchText, data } = this.props;
-      if (nextProps.searchText !== searchText) {
+    getSnapshotBeforeUpdate(prevProps) {
+      if (prevProps.searchText !== this.props.searchText) {
         if (isRemoteSearch()) {
-          handleRemoteSearchChange(nextProps.searchText);
-        } else {
-          const result = this.search(nextProps);
-          this.triggerListener(result);
-          this.setState({
-            data: result
-          });
+          return 'handleRemoteSearchChange';
         }
-      } else {
-        if (isRemoteSearch()) {
-          this.setState({ data: nextProps.data });
-        } else if (!_.isEqual(nextProps.data, data)) {
-          const result = this.search(nextProps);
-          this.triggerListener(result);
-          this.setState({
-            data: result
-          });
+        return 'triggerListener';
+      }
+      if (isRemoteSearch()) {
+        return 'setState';
+      }
+      if (!_.isEqual(prevProps.data, this.propsdata)) {
+        return 'triggerListener';
+      }
+      return null;
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    componentDidUpdate(_prevProps, _prevState, snapshot) {
+    // static getDerivedStateFromProps(prevProps) {
+      if (snapshot !== null) {
+        // eslint-disable-next-line default-case
+        switch (snapshot) {
+          case 'handleRemoteSearchChange':
+            handleRemoteSearchChange(this.props.searchText);
+            break;
+          case 'triggerListener':
+            // eslint-disable-next-line no-case-declarations
+            const result = this.search(this.props);
+            this.triggerListener(result);
+            this.setState({
+              data: result
+            });
+            break;
+          case 'setState':
+            this.setState({ data: this.props.data });
+            break;
         }
       }
+      // if (prevProps.searchText !== this.props.searchText) {
+      //   if (isRemoteSearch()) {
+      //     handleRemoteSearchChange(this.props.searchText);
+      //   } else {
+      //     const result = this.search(this.props);
+      //     this.triggerListener(result);
+      //     this.setState({
+      //       data: result
+      //     });
+      //   }
+      // } else {
+      //   if (isRemoteSearch()) {
+      //     this.setState({ data: this.props.data });
+      //   } else if (!_.isEqual(this.props.data, prevProps.data)) {
+      //     const result = this.search(this.props);
+      //     this.triggerListener(result);
+      //     this.setState({
+      //       data: result
+      //     });
+      //   }
+      // }
     }
 
     getSearched() {

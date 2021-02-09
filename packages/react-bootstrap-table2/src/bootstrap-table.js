@@ -22,10 +22,10 @@ class BootstrapTable extends PropsBaseResolver(Component) {
   }
 
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    if (nextProps.onDataSizeChange && !nextProps.pagination) {
-      if (nextProps.data.length !== this.props.data.length) {
-        nextProps.onDataSizeChange({ dataSize: nextProps.data.length });
+  componentDidUpdate(prevProps) {
+    if (this.props.onDataSizeChange && !this.props.pagination) {
+      if (this.props.data.length !== prevProps.data.length) {
+        this.props.onDataSizeChange({ dataSize: this.props.data.length });
       }
     }
   }

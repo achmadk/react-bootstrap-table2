@@ -26,11 +26,11 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
 
   // eslint-disable-next-line camelcase
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    let { columnToggle } = this.state;
-    if (columnToggle !== nextProps.columnToggle) {
-      if (nextProps.columnToggle) {
-        columnToggle = nextProps.columns
+  componentDidUpdate(_prevProps, prevState) {
+    let { columnToggle } = prevState;
+    if (columnToggle !== this.props.columnToggle) {
+      if (this.props.columnToggle) {
+        columnToggle = this.props.columns
           .reduce((obj, column) => {
             obj[column.dataField] = !column.hidden;
             return obj;

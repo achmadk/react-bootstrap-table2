@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-did-update-set-state */
 /* eslint camelcase: 0 */
 /* eslint react/prop-types: 0 */
@@ -24,11 +25,11 @@ class RowExpandProvider extends React.Component {
     };
   }
 
-  componentDidUpdate(nextProps) {
+  componentDidUpdate() {
     const { expanded } = this.state;
-    if (nextProps.expandRow) {
-      let nextExpanded = [...(nextProps.expandRow.expanded || expanded)];
-      const { nonExpandable = [] } = nextProps.expandRow;
+    if (this.props.expandRow) {
+      let nextExpanded = [...(this.props?.expandRow?.expanded ?? expanded)];
+      const { nonExpandable = [] } = this.props.expandRow;
       nextExpanded = nextExpanded.filter((rowId) => !_.contains(nonExpandable, rowId));
       const isClosing = expanded.reduce((acc, cur) => {
         if (!_.contains(nextExpanded, cur)) {

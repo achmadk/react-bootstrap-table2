@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint camelcase: 0 */
 /* eslint react/prop-types: 0 */
 import React from 'react';
@@ -25,13 +26,12 @@ class SelectionProvider extends React.Component {
   }
 
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    // eslint-disable-next-line react/destructuring-assignment
-    if (nextProps.selectRow !== this.props?.selectRow) {
-      // this.selected = nextProps.selectRow.selected || this.selected;
+  componentDidUpdate(prevProps) {
+    if (this.props.selectRow !== prevProps?.selectRow) {
+      // this.selected = this.props.selectRow.selected || this.selected;
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState(({ selected }) => ({
-        selected: nextProps?.selectRow?.selected ?? selected
+        selected: this.props?.selectRow?.selected ?? selected
       }));
     }
   }

@@ -90,27 +90,27 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
   }
 
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    if (nextProps.columns.filter((col) => col.sort).length <= 0) {
+  componentDidUpdate(prevProps) {
+    if (this.props.columns.filter((col) => col.sort).length <= 0) {
       this.SortContext = null;
     } else if (!this.SortContext) {
       this.SortContext = createSortContext(
         dataOperator, this.isRemoteSort, this.handleRemoteSortChange
       );
     }
-    if (!nextProps.pagination && this.props.pagination) {
+    if (!this.props.pagination && prevProps.pagination) {
       this.PaginationContext = null;
     }
-    if (nextProps.pagination && !this.props.pagination) {
-      this.PaginationContext = nextProps.pagination.createContext(
+    if (this.props.pagination && !prevProps.pagination) {
+      this.PaginationContext = this.props.pagination.createContext(
         this.isRemotePagination, this.handleRemotePageChange
       );
     }
-    if (!nextProps.cellEdit && this.props.cellEdit) {
+    if (!this.props.cellEdit && prevProps.cellEdit) {
       this.CellEditContext = null;
     }
-    if (nextProps.cellEdit && !this.props.cellEdit) {
-      this.CellEditContext = nextProps.cellEdit.createContext(
+    if (this.props.cellEdit && !prevProps.cellEdit) {
+      this.CellEditContext = this.props.cellEdit.createContext(
         _, dataOperator, this.isRemoteCellEdit, this.handleRemoteCellChange
       );
     }

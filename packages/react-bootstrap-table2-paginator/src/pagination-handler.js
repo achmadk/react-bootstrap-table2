@@ -16,9 +16,9 @@ export default (WrappedComponent) => class PaginationHandler extends pageResolve
   }
 
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    const { dataSize, currSizePerPage } = nextProps;
-    if (currSizePerPage !== this.props.currSizePerPage || dataSize !== this.props.dataSize) {
+  componentDidUpdate(prevProps) {
+    const { dataSize, currSizePerPage } = this.props;
+    if (currSizePerPage !== prevProps.currSizePerPage || dataSize !== prevProps.dataSize) {
       const totalPages = this.calculateTotalPage(currSizePerPage, dataSize);
       const lastPage = this.calculateLastPage(totalPages);
       // eslint-disable-next-line react/no-did-update-set-state

@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/no-unused-prop-types */
 /* eslint react/prop-types: 0 */
 /* eslint react/require-default-props: 0 */
@@ -36,17 +37,17 @@ export default (
     }
 
     // UNSAFE_componentWillReceiveProps(nextProps) {
-    componentDidUpdate(nextProps) {
+    componentDidUpdate(_prevProps, prevState) {
     // static getDerivedStateFromProps(nextProps) {
       // let nextData = nextProps.data;
       // if (!isRemoteFiltering() && !_.isEqual(nextProps.data, this.data)) {
       // eslint-disable-next-line react/destructuring-assignment
-      if (!isRemoteFiltering() && !_.isEqual(nextProps.data, this.state.data)) {
-        this.doFilter(nextProps, this.isEmitDataChange);
+      if (!isRemoteFiltering() && !_.isEqual(this.props.data, prevState.data)) {
+        this.doFilter(this.props, this.isEmitDataChange);
       } else {
         // eslint-disable-next-line react/no-did-update-set-state
         this.setState({
-          data: nextProps.data
+          data: this.props.data
         });
       }
     }

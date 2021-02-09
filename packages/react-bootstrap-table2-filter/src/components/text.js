@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint react/require-default-props: 0 */
 /* eslint react/prop-types: 0 */
@@ -45,10 +46,9 @@ class TextFilter extends Component {
   }
 
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(nextProps) {
-    const { defaultValue } = this.props;
-    if (nextProps.defaultValue !== defaultValue) {
-      this.applyFilter(nextProps.defaultValue);
+  componentDidUpdate(prevProps) {
+    if (this.props.defaultValue !== prevProps.defaultValue) {
+      this.applyFilter(this.props.defaultValue);
     }
   }
 
