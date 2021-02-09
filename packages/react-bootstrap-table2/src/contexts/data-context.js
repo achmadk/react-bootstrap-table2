@@ -1,22 +1,20 @@
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable react/destructuring-assignment */
 /* eslint camelcase: 0 */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default () => {
+export default (_) => {
   const DataContext = React.createContext();
 
   class DataProvider extends Component {
     // eslint-disable-next-line react/state-in-constructor, react/destructuring-assignment
     state = { data: this.props.data };
 
-    static getDerivedStateFromProps(nextProps) {
-      return { data: nextProps.data };
-    }
-
-    componentDidUpdate(_, prevState) {
-      const { data } = this.state;
-      if (prevState.data !== data) {
-        this.updateData(data);
+    componentDidUpdate(prevProps) {
+      if (!_.isEqual(this.props.data, prevProps.data)) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ data: this.props.data });
       }
     }
 
@@ -27,10 +25,6 @@ export default () => {
       if (searchProps) return searchProps.data;
       if (filterProps) return filterProps.data;
       return data;
-    }
-
-    updateData(newData) {
-      this.setState({ data: newData });
     }
 
     render() {
