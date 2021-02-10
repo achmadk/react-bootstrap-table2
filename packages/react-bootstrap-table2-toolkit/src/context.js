@@ -8,35 +8,38 @@ import createSearchContext from './search/context';
 const ToolkitContext = React.createContext();
 
 class ToolkitProvider extends statelessDecorator(React.Component) {
-  constructor(props) {
-    super(props);
-    const state = {};
-    this._ = null;
+  _ = null;
 
-    if (props?.columnToggle) {
-      state.columnToggle = props?.columns
-        ?.reduce((obj, column) => {
-          obj[column.dataField] = !column.hidden;
-          return obj;
-        }, {}) ?? null;
-    }
-    state.searchText = typeof props.search === 'object' ? (props.search.defaultSearch || '') : '';
-    this.state = state;
+  state = {
+    searchText: typeof this.props.search === 'object' ? (this.props.search.defaultSearch || '') : ''
   }
 
-  // eslint-disable-next-line camelcase
-  // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(prevProps) {
-    if (this._.isEqual(prevProps?.columnToggle, this.props?.columnToggle)) {
-      const columnToggle = this.props?.columns
-        ?.reduce((obj, column) => {
-          obj[column.dataField] = !column.hidden;
-          return obj;
-        }, {}) ?? null;
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ columnToggle });
-    }
+  #columnToggle = this.props?.columns?.reduce((obj, column) => {
+    obj[column.dataField] = !column.hidden;
+    return obj;
+  }, {}) ?? null;
+
+  get columnToggle() {
+    return this.#columnToggle;
   }
+
+  set columnToggle(value) {
+    this.#columnToggle = value;
+  }
+
+  // // eslint-disable-next-line camelcase
+  // // UNSAFE_componentWillReceiveProps(nextProps) {
+  // componentDidUpdate(prevProps) {
+  //   if (this._.isEqual(prevProps?.columnToggle, this.props?.columnToggle)) {
+  //     const columnToggle = this.props?.columns
+  //       ?.reduce((obj, column) => {
+  //         obj[column.dataField] = !column.hidden;
+  //         return obj;
+  //       }, {}) ?? null;
+  //     // eslint-disable-next-line react/no-did-update-set-state
+  //     this.setState({ columnToggle });
+  //   }
+  // }
 
   onSearch = (searchText) => {
     if (searchText !== this.state.searchText) {
@@ -49,12 +52,16 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
   }
 
   onColumnToggle = (dataField) => {
-    this.setState(({ columnToggle }) => ({
-      columnToggle: {
-        ...columnToggle,
-        [dataField]: !columnToggle[dataField]
-      }
-    }));
+    const selectedColumn = this.props.columns
+      ?.find((column) => column.dataField === dataField) ?? null;
+    this.columnToggle[dataField] = !this.columnToggle?.[dataField]
+      ?? selectedColumn?.hidden ?? false;
+    // this.setState(({ columnToggle }) => ({
+    //   columnToggle: {
+    //     ...columnToggle,
+    //     [dataField]: !columnToggle[dataField]
+    //   }
+    // }));
   }
 
   /**
@@ -86,7 +93,8 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
     }
     if (this.props.columnToggle) {
       baseProps.columnToggle = {
-        toggles: this.state.columnToggle
+        // toggles: this.state.columnToggle
+        toggles: this.columnToggle
       };
     }
     return (
@@ -101,7 +109,7 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
         },
         columnToggleProps: {
           columns: this.props.columns,
-          toggles: this.state.columnToggle,
+          toggles: this.columnToggle,
           onColumnToggle: this.onColumnToggle
         },
         baseProps
