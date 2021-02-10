@@ -24,10 +24,21 @@ export default (
       this.clearFilters = {};
       // this.onExternalFilter = this.onExternalFilter.bind(this);
       // this.data = props.data;
-      this.state = {
-        data: props.data
-      };
+      // this.state = {
+      //   data: props.data
+      // };
       this.isEmitDataChange = false;
+    }
+
+    // eslint-disable-next-line react/sort-comp
+    #data = this.props.data
+
+    get data() {
+      return this.#data;
+    }
+
+    set data(value) {
+      this.#data = value;
     }
 
     componentDidMount() {
@@ -37,20 +48,13 @@ export default (
     }
 
     // UNSAFE_componentWillReceiveProps(nextProps) {
-    componentDidUpdate(_prevProps, prevState) {
+    componentDidUpdate(prevProps) {
     // static getDerivedStateFromProps(nextProps) {
       // let nextData = nextProps.data;
       // if (!isRemoteFiltering() && !_.isEqual(nextProps.data, this.data)) {
       // eslint-disable-next-line react/destructuring-assignment
-      if (!_.isEqual(this.props.data, prevState.data)) {
-        if (!isRemoteFiltering()) {
-          this.doFilter(this.props, this.isEmitDataChange);
-        } else {
-          // eslint-disable-next-line react/no-did-update-set-state
-          this.setState({
-            data: this.props.data
-          });
-        }
+      if (!_.isEqual(this.props.data, prevProps.data) && !isRemoteFiltering()) {
+        this.doFilter(this.props, this.isEmitDataChange);
       }
     }
 
@@ -95,7 +99,7 @@ export default (
 
     getFiltered() {
       // eslint-disable-next-line react/destructuring-assignment
-      return this.state.data;
+      return this.data;
     }
 
     doFilter = (props = this.props, ignoreEmitDataChange = false) => {
@@ -107,25 +111,31 @@ export default (
         filter.afterFilter(result, this.currFilters);
       }
       this.data = result;
-      this.setState({
-        data: result
-      }, () => {
-        if (dataChangeListener && !ignoreEmitDataChange) {
-          this.isEmitDataChange = true;
-          dataChangeListener.emit('filterChanged', result.length);
-        } else {
-          this.isEmitDataChange = false;
-          this.forceUpdate();
-        }
-      });
+      if (dataChangeListener && !ignoreEmitDataChange) {
+        this.isEmitDataChange = true;
+        dataChangeListener.emit('filterChanged', result.length);
+      } else {
+        this.isEmitDataChange = false;
+        this.forceUpdate();
+      }
+      // this.setState({
+      //   data: result
+      // }, () => {
+      //   if (dataChangeListener && !ignoreEmitDataChange) {
+      //     this.isEmitDataChange = true;
+      //     dataChangeListener.emit('filterChanged', result.length);
+      //   } else {
+      //     this.isEmitDataChange = false;
+      //     this.forceUpdate();
+      //   }
+      // });
     }
 
     render() {
       const { children } = this.props;
-      const { data } = this.state;
       return (
         <FilterContext.Provider value={ {
-          data,
+          data: this.data,
           onFilter: this.onFilter,
           onExternalFilter: this.onExternalFilter,
           currFilters: this.currFilters

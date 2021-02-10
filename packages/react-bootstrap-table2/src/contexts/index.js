@@ -19,7 +19,7 @@ import dataOperator from '../store/operators';
 const withContext = (Base) => class BootstrapTableContainer extends remoteResolver(Component) {
   constructor(props) {
     super(props);
-    this.DataContext = createDataContext(_);
+    this.DataContext = createDataContext();
 
     if (props.registerExposedAPI) {
       const exposedAPIEmitter = new EventEmitter();
