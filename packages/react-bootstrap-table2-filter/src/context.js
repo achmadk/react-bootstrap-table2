@@ -42,13 +42,15 @@ export default (
       // let nextData = nextProps.data;
       // if (!isRemoteFiltering() && !_.isEqual(nextProps.data, this.data)) {
       // eslint-disable-next-line react/destructuring-assignment
-      if (!isRemoteFiltering() && !_.isEqual(this.props.data, prevState.data)) {
-        this.doFilter(this.props, this.isEmitDataChange);
-      } else {
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({
-          data: this.props.data
-        });
+      if (!isRemoteFiltering()) {
+        if (!_.isEqual(this.props.data, prevState.data)) {
+          this.doFilter(this.props, this.isEmitDataChange);
+        } else {
+          // eslint-disable-next-line react/no-did-update-set-state
+          this.setState({
+            data: this.props.data
+          });
+        }
       }
     }
 
