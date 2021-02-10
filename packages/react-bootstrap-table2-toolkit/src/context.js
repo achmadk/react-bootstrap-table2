@@ -13,12 +13,12 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
     const state = {};
     this._ = null;
 
-    if (props.columnToggle) {
-      state.columnToggle = props.columns
-        .reduce((obj, column) => {
+    if (props?.columnToggle) {
+      state.columnToggle = props?.columns
+        ?.reduce((obj, column) => {
           obj[column.dataField] = !column.hidden;
           return obj;
-        }, {});
+        }, {}) ?? null;
     }
     state.searchText = typeof props.search === 'object' ? (props.search.defaultSearch || '') : '';
     this.state = state;
@@ -26,18 +26,13 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
 
   // eslint-disable-next-line camelcase
   // UNSAFE_componentWillReceiveProps(nextProps) {
-  componentDidUpdate(_prevProps, prevState) {
-    let { columnToggle } = prevState;
-    if (columnToggle !== this.props.columnToggle) {
-      if (this.props.columnToggle) {
-        columnToggle = this.props.columns
-          .reduce((obj, column) => {
-            obj[column.dataField] = !column.hidden;
-            return obj;
-          }, {});
-      } else {
-        columnToggle = null;
-      }
+  componentDidUpdate(prevProps) {
+    if (this._.isEqual(prevProps?.columnToggle, this.props?.columnToggle)) {
+      const columnToggle = this.props?.columns
+        ?.reduce((obj, column) => {
+          obj[column.dataField] = !column.hidden;
+          return obj;
+        }, {}) ?? null;
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ columnToggle });
     }
