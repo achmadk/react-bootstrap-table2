@@ -54,6 +54,7 @@ export interface BootstrapTableColumnsOptional<TableData extends DefaultTableDat
     headerSortingClasses: string | ((column: BootstrapTableColumns<TableData>, sortOrder: BootstrapTableOrders, isLastSorting: boolean, colIndex: number) => string);
     headerSortingStyle: CSSProperties | ((column: BootstrapTableColumns<TableData>, sortOrder: BootstrapTableOrders, isLastSorting: boolean, colIndex: number) => CSSProperties);
     searchable: boolean;
+    readonly toggle: boolean;
 }
 export interface BootstrapTableColumns<TableData extends DefaultTableData = DefaultTableData> extends Partial<BootstrapTableColumnsOptional<TableData>> {
     dataField: keyof TableData | string;

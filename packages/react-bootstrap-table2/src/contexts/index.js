@@ -116,29 +116,27 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     }
   }
 
-  renderBase() {
-    return (
-      rootProps,
-      filterProps,
-      searchProps,
-      sortProps,
-      paginationProps,
-      columnToggleProps
-    ) => (
-      <Base
-        ref={ (n) => this.table = n }
-        { ...this.props }
-        { ...sortProps }
-        { ...filterProps }
-        { ...searchProps }
-        { ...paginationProps }
-        { ...columnToggleProps }
-        data={ rootProps.getData(filterProps, searchProps, sortProps, paginationProps) }
-      />
-    );
-  }
+  renderBase = () => (
+    rootProps,
+    filterProps,
+    searchProps,
+    sortProps,
+    paginationProps,
+    columnToggleProps
+  ) => (
+    <Base
+      ref={ (n) => this.table = n }
+      { ...this.props }
+      { ...sortProps }
+      { ...filterProps }
+      { ...searchProps }
+      { ...paginationProps }
+      { ...columnToggleProps }
+      data={ rootProps.getData(filterProps, searchProps, sortProps, paginationProps) }
+    />
+  );
 
-  renderWithColumnManagementCtx(base, baseProps) {
+  renderWithColumnManagementCtx = (base, baseProps) => {
     const { columnToggle } = this.props;
     return (
       rootProps,
@@ -167,7 +165,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithSelectionCtx(base, baseProps) {
+  renderWithSelectionCtx = (base, baseProps) => {
     const { selectRow } = this.props;
     return (
       rootProps,
@@ -195,7 +193,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithRowExpandCtx(base, baseProps) {
+  renderWithRowExpandCtx = (base, baseProps) => {
     const { expandRow } = this.props;
     return (
       rootProps,
@@ -223,7 +221,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithPaginationCtx(base) {
+  renderWithPaginationCtx = (base) => {
     const {
       pagination, bootstrap4, onDataSizeChange, id
     } = this.props;
@@ -258,7 +256,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithSortCtx(base, baseProps) {
+  renderWithSortCtx = (base, baseProps) => {
     const { defaultSorted, defaultSortDirection, sort } = this.props;
     return (
       rootProps,
@@ -287,7 +285,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithSearchCtx(base, baseProps) {
+  renderWithSearchCtx = (base, baseProps) => {
     const { search, dataChangeListener } = this.props;
     return (
       rootProps,
@@ -313,7 +311,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithFilterCtx(base, baseProps) {
+  renderWithFilterCtx = (base, baseProps) => {
     const { filter, dataChangeListener } = this.props;
     return (rootProps) => (
       <this.FilterContext.Provider
@@ -335,7 +333,7 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
     );
   }
 
-  renderWithCellEditCtx(base, baseProps) {
+  renderWithCellEditCtx = (base, baseProps) => {
     const { selectRow, cellEdit } = this.props;
     return (rootProps) => (
       <this.CellEditContext.Provider

@@ -11,35 +11,25 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
   _ = null;
 
   state = {
-    searchText: typeof this.props.search === 'object' ? (this.props.search.defaultSearch || '') : ''
+    searchText: typeof this.props.search === 'object' ? (this.props.search.defaultSearch || '') : '',
+    columnToggle: this.props?.columns
+      ?.reduce((obj, column) => {
+        obj[column.dataField] = !column.hidden;
+        return obj;
+      }, {}) ?? null
   }
 
-  #columnToggle = this.props?.columns?.reduce((obj, column) => {
-    obj[column.dataField] = !column.hidden;
-    return obj;
-  }, {}) ?? null;
-
-  get columnToggle() {
-    return this.#columnToggle;
+  componentDidUpdate(prevProps) {
+    if (prevProps?.columnToggle !== this.props?.columnToggle) {
+      const columnToggle = this.props?.columns
+        ?.reduce((obj, column) => {
+          obj[column.dataField] = !column.hidden;
+          return obj;
+        }, {}) ?? null;
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ columnToggle });
+    }
   }
-
-  set columnToggle(value) {
-    this.#columnToggle = value;
-  }
-
-  // // eslint-disable-next-line camelcase
-  // // UNSAFE_componentWillReceiveProps(nextProps) {
-  // componentDidUpdate(prevProps) {
-  //   if (this._.isEqual(prevProps?.columnToggle, this.props?.columnToggle)) {
-  //     const columnToggle = this.props?.columns
-  //       ?.reduce((obj, column) => {
-  //         obj[column.dataField] = !column.hidden;
-  //         return obj;
-  //       }, {}) ?? null;
-  //     // eslint-disable-next-line react/no-did-update-set-state
-  //     this.setState({ columnToggle });
-  //   }
-  // }
 
   onSearch = (searchText) => {
     if (searchText !== this.state.searchText) {
@@ -54,14 +44,14 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
   onColumnToggle = (dataField) => {
     const selectedColumn = this.props.columns
       ?.find((column) => column.dataField === dataField) ?? null;
-    this.columnToggle[dataField] = !this.columnToggle?.[dataField]
-      ?? selectedColumn?.hidden ?? false;
-    // this.setState(({ columnToggle }) => ({
-    //   columnToggle: {
-    //     ...columnToggle,
-    //     [dataField]: !columnToggle[dataField]
-    //   }
-    // }));
+    // this.columnToggle[dataField] = !this.columnToggle?.[dataField]
+    //   ?? selectedColumn?.hidden ?? false;
+    this.setState(({ columnToggle }) => ({
+      columnToggle: {
+        ...columnToggle,
+        [dataField]: !columnToggle?.[dataField] ?? selectedColumn?.hidden ?? false
+      }
+    }));
   }
 
   /**
@@ -93,8 +83,7 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
     }
     if (this.props.columnToggle) {
       baseProps.columnToggle = {
-        // toggles: this.state.columnToggle
-        toggles: this.columnToggle
+        toggles: this.state.columnToggle
       };
     }
     return (
@@ -109,7 +98,7 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
         },
         columnToggleProps: {
           columns: this.props.columns,
-          toggles: this.columnToggle,
+          toggles: this.state.columnToggle,
           onColumnToggle: this.onColumnToggle
         },
         baseProps

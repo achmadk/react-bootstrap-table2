@@ -22,11 +22,6 @@ export default (
       super(props);
       this.currFilters = {};
       this.clearFilters = {};
-      // this.onExternalFilter = this.onExternalFilter.bind(this);
-      // this.data = props.data;
-      // this.state = {
-      //   data: props.data
-      // };
       this.isEmitDataChange = false;
     }
 
@@ -34,7 +29,7 @@ export default (
     #data = this.props.data
 
     get data() {
-      return this.#data;
+      return this.props.data;
     }
 
     set data(value) {
@@ -47,12 +42,7 @@ export default (
       }
     }
 
-    // UNSAFE_componentWillReceiveProps(nextProps) {
     componentDidUpdate(prevProps) {
-    // static getDerivedStateFromProps(nextProps) {
-      // let nextData = nextProps.data;
-      // if (!isRemoteFiltering() && !_.isEqual(nextProps.data, this.data)) {
-      // eslint-disable-next-line react/destructuring-assignment
       if (!_.isEqual(this.props.data, prevProps.data) && !isRemoteFiltering()) {
         this.doFilter(this.props, this.isEmitDataChange);
       }
@@ -118,17 +108,6 @@ export default (
         this.isEmitDataChange = false;
         this.forceUpdate();
       }
-      // this.setState({
-      //   data: result
-      // }, () => {
-      //   if (dataChangeListener && !ignoreEmitDataChange) {
-      //     this.isEmitDataChange = true;
-      //     dataChangeListener.emit('filterChanged', result.length);
-      //   } else {
-      //     this.isEmitDataChange = false;
-      //     this.forceUpdate();
-      //   }
-      // });
     }
 
     render() {
