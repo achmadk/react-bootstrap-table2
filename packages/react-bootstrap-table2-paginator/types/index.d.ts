@@ -268,6 +268,8 @@ export interface ReactBootstrapTablePaginatorOptionalProps {
         page: number;
         onSizePerPageChange(page: number): void | Promise<void>;
     }): ReactNode;
+
+    variation: 'dropup' | 'dropdown'
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
