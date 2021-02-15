@@ -14,7 +14,7 @@ export interface ToolkitContextValueCSVProps<CSVSource = any> {
 export interface ToolkitContextValueColumnToggleProps<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> {
     columns: Columns[];
     toggles: null | Record<keyof TableData | string, boolean>;
-    onColumnToggle(dataField: keyof TableData | string): void;
+    onColumnToggle(dataField: keyof TableData | string, value?: boolean): void | Promise<void>;
 }
 declare type SearchContext<TableData extends DefaultTableData = DefaultTableData> = ReactContext<{
     data: TableData[];
@@ -122,7 +122,7 @@ interface ToggleListPropsOptional {
 export interface ToggleListProps<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> extends Partial<ToggleListPropsOptional> {
     columns: Columns[];
     toggles: Record<keyof TableData | string, boolean>;
-    onColumnToggle(keyField: keyof TableData | string): void | Promise<void>;
+    onColumnToggle(keyField: keyof TableData | string, value?: boolean): void | Promise<void>;
 }
 declare type ToggleList<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> = (props: ToggleListProps<TableData, Columns>) => ReactElement<ToggleListProps<TableData, Columns>>;
 export declare type ColumnToggle<TableData extends DefaultTableData = DefaultTableData, Columns extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> = {

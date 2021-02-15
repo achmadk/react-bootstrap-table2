@@ -81,12 +81,12 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
     this.setState({ searchText: '' });
   }
 
-  onColumnToggle = (dataField) => {
-    const { columnToggle } = this.state;
-    columnToggle[dataField] = !columnToggle[dataField];
-    this.setState(({
-      ...this.state,
-      columnToggle
+  onColumnToggle = (dataField, value) => {
+    this.setState(({ columnToggle }) => ({
+      columnToggle: {
+        ...columnToggle,
+        [dataField]: typeof value === 'boolean' ? value : !columnToggle[dataField]
+      }
     }));
   }
 
