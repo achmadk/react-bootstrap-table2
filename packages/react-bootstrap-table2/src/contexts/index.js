@@ -98,10 +98,10 @@ const withContext = (Base) => class BootstrapTableContainer extends remoteResolv
         dataOperator, this.isRemoteSort, this.handleRemoteSortChange
       );
     }
-    if (!this.props.pagination && prevProps.pagination) {
+    if (!this.props?.pagination && prevProps?.pagination) {
       this.PaginationContext = null;
     }
-    if (this.props.pagination && !prevProps.pagination) {
+    if (this.props?.pagination && !prevProps?.pagination) {
       this.PaginationContext = this.props.pagination.createContext(
         this.isRemotePagination, this.handleRemotePageChange
       );
