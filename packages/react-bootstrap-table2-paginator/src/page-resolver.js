@@ -3,7 +3,7 @@
 import Const from './const';
 
 export default (ExtendBase) => class PageResolver extends ExtendBase {
-  backToPrevPage() {
+  backToPrevPage = () => {
     const { currPage, pageStartIndex } = this.props;
     return (currPage - 1) < pageStartIndex ? pageStartIndex : currPage - 1;
   }
@@ -14,16 +14,12 @@ export default (ExtendBase) => class PageResolver extends ExtendBase {
     return { totalPages, lastPage };
   }
 
-  calculateTotalPage(sizePerPage = this.props.currSizePerPage, dataSize = this.props.dataSize) {
-    return Math.ceil(dataSize / sizePerPage);
-  }
+  calculateTotalPage = (sizePerPage = this.props.currSizePerPage, dataSize = this.props.dataSize) => Math.ceil(dataSize / sizePerPage)
 
-  calculateLastPage(totalPages, pageStartIndex = this.props.pageStartIndex) {
-    // const { pageStartIndex } = this.props;
-    return pageStartIndex + totalPages - 1;
-  }
+  // const { pageStartIndex } = this.props;
+  calculateLastPage = (totalPages, pageStartIndex = this.props.pageStartIndex) => pageStartIndex + totalPages - 1
 
-  calculateFromTo() {
+  calculateFromTo = () => {
     const {
       dataSize,
       currPage,
@@ -40,10 +36,10 @@ export default (ExtendBase) => class PageResolver extends ExtendBase {
     return [from, to];
   }
 
-  calculatePages(
+  calculatePages = (
     totalPages,
     lastPage
-  ) {
+  ) => {
     const {
       currPage,
       paginationSize,
@@ -107,7 +103,7 @@ export default (ExtendBase) => class PageResolver extends ExtendBase {
     return pages;
   }
 
-  calculatePageStatus(pages = [], lastPage, disablePageTitle = false) {
+  calculatePageStatus = (pages = [], lastPage, disablePageTitle = false) => {
     const {
       currPage,
       pageStartIndex,
@@ -152,7 +148,7 @@ export default (ExtendBase) => class PageResolver extends ExtendBase {
       });
   }
 
-  calculateSizePerPageStatus() {
+  calculateSizePerPageStatus = () => {
     const { sizePerPageList } = this.props;
     return sizePerPageList.map((_sizePerPage) => {
       const pageText = typeof _sizePerPage.text !== 'undefined' ? _sizePerPage.text : _sizePerPage;

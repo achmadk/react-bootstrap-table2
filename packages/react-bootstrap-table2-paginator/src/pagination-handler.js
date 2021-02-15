@@ -8,17 +8,10 @@ import pageResolver from './page-resolver';
 export default (WrappedComponent) => class PaginationHandler extends pageResolver(Component) {
   state = this.initialState();
 
-  static getDerivedStateFromProps(props) {
-    const { currSizePerPage, dataSize, pageStartIndex } = props;
-    const totalPages = this.calculateTotalPage(currSizePerPage, dataSize);
-    const lastPage = this.calculateLastPage(totalPages, pageStartIndex);
-    return { totalPages, lastPage };
-  }
-
-  // UNSAFE_componentWillReceiveProps(nextProps) {
   componentDidUpdate(prevProps) {
     const { dataSize, currSizePerPage } = this.props;
-    if (currSizePerPage !== prevProps.currSizePerPage || dataSize !== prevProps.dataSize) {
+    // eslint-disable-next-line max-len
+    if (this.props?.currSizePerPage !== prevProps?.currSizePerPage || this.props?.dataSize !== prevProps?.dataSize) {
       const totalPages = this.calculateTotalPage(currSizePerPage, dataSize);
       const lastPage = this.calculateLastPage(totalPages);
       // eslint-disable-next-line react/no-did-update-set-state

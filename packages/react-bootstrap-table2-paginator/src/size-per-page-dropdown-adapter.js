@@ -7,11 +7,6 @@ import pageResolver from './page-resolver';
 import SizePerPageDropDown from './size-per-page-dropdown';
 
 const sizePerPageDropdownAdapter = (WrappedComponent) => class SizePerPageDropdownAdapter extends pageResolver(Component) {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
   state = { dropdownOpen: false };
 
   toggleDropDown = () => {
@@ -19,7 +14,7 @@ const sizePerPageDropdownAdapter = (WrappedComponent) => class SizePerPageDropdo
   }
 
   closeDropDown = () => {
-    this.setState(() => ({ dropdownOpen: false }));
+    this.setState({ dropdownOpen: false });
   }
 
   handleChangeSizePerPage = (sizePerPage) => {

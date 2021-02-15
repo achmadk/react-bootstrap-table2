@@ -47,6 +47,7 @@ class Pagination extends pageResolver(Component) {
       <div className="row react-bootstrap-table-pagination">
         <div className="col-md-6 col-xs-6 col-sm-6 col-lg-6">
           <SizePerPageDropdownWithAdapter
+            { ...rest }
             bootstrap4={ bootstrap4 }
             tableId={ tableId }
             sizePerPageList={ sizePerPageList }
@@ -60,6 +61,7 @@ class Pagination extends pageResolver(Component) {
             showTotal
               ? (
                 <PaginationTotalWithAdapter
+                  { ...rest }
                   currPage={ currPage }
                   currSizePerPage={ currSizePerPage }
                   pageStartIndex={ pageStartIndex }

@@ -15,34 +15,64 @@ const { Provider } = createBaseContext();
 const PaginationDataContext = React.createContext();
 
 class PaginationDataProvider extends Provider {
-  componentDidUpdate(prevProps, prevState) {
-    super.componentDidUpdate(this.props);
-    const { currSizePerPage } = prevState;
-    const { custom, onPageChange } = this.props.pagination.options;
+  // componentDidUpdate(prevProps) {
+  //   super.componentDidUpdate(this.props);
+  //   const { currSizePerPage } = this;
+  //   const { custom, onPageChange } = this.props.pagination.options;
 
-    const pageStartIndex = typeof this.props.pagination.options.pageStartIndex !== 'undefined'
-      ? this.props.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
+  //   const pageStartIndex = typeof this.props.pagination.options.pageStartIndex !== 'undefined'
+  //     ? this.props.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
+
+  //   // user should align the page when the page is not fit to the data size when remote enable
+  //   if (!this.isRemotePagination() && !custom) {
+  //     const newPage = alignPage(
+  //       this.props.data.length,
+  //       prevProps.data.length,
+  //       this.currPage,
+  //       currSizePerPage,
+  //       pageStartIndex
+  //     );
+
+  //     if (this.currPage !== newPage) {
+  //       if (onPageChange) {
+  //         onPageChange(newPage, currSizePerPage);
+  //       }
+  //       this.currPage = newPage;
+  //     }
+  //   }
+  //   if (this.props.onDataSizeChange && this.props.data.length !== prevProps.data.length) {
+  //     this.props.onDataSizeChange({ dataSize: this.props.data.length });
+  //   }
+  // }
+
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    super.UNSAFE_componentWillReceiveProps(nextProps);
+    const { currSizePerPage } = this;
+    const { custom, onPageChange } = nextProps.pagination.options;
+
+    const pageStartIndex = typeof nextProps.pagination.options.pageStartIndex !== 'undefined'
+      ? nextProps.pagination.options.pageStartIndex : Const.PAGE_START_INDEX;
 
     // user should align the page when the page is not fit to the data size when remote enable
     if (!this.isRemotePagination() && !custom) {
       const newPage = alignPage(
+        nextProps.data.length,
         this.props.data.length,
-        prevProps.data.length,
-        prevState.currPage,
+        this.currPage,
         currSizePerPage,
         pageStartIndex
       );
 
-      if (prevState.currPage !== newPage) {
+      if (this.currPage !== newPage) {
         if (onPageChange) {
           onPageChange(newPage, currSizePerPage);
         }
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({ currPage: newPage });
+        this.currPage = newPage;
       }
     }
-    if (this.props.onDataSizeChange && this.props.data.length !== prevProps.data.length) {
-      this.props.onDataSizeChange({ dataSize: this.props.data.length });
+    if (nextProps.onDataSizeChange && nextProps.data.length !== this.props.data.length) {
+      nextProps.onDataSizeChange({ dataSize: nextProps.data.length });
     }
   }
 
@@ -72,7 +102,7 @@ class PaginationDataProvider extends Provider {
   render() {
     let { data } = this.props;
     const { pagination: { options } } = this.props;
-    const { currPage, currSizePerPage } = this.state;
+    const { currPage, currSizePerPage } = this;
     const pageStartIndex = typeof options.pageStartIndex === 'undefined'
       ? Const.PAGE_START_INDEX : options.pageStartIndex;
 
