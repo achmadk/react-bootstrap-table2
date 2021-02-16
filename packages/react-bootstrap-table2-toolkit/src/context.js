@@ -19,15 +19,17 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
       }, {}) ?? null
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps?.columnToggle !== this.props?.columnToggle) {
-      const columnToggle = this.props?.columns
-        ?.reduce((obj, column) => {
-          obj[column.dataField] = !column.hidden;
-          return obj;
-        }, {}) ?? null;
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ columnToggle });
+      if (!this._.isEqual(prevState.columnToggle, this.state.columnToggle)) {
+        const columnToggle = this.props?.columns
+          ?.reduce((obj, column) => {
+            obj[column.dataField] = !column.hidden;
+            return obj;
+          }, {}) ?? null;
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ columnToggle });
+      }
     }
   }
 
@@ -41,17 +43,19 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
     this.setState({ searchText: '' });
   }
 
-  onColumnToggle = (dataField) => {
+  onColumnToggle = (dataField, forceValue) => {
     const selectedColumn = this.props.columns
       ?.find((column) => column.dataField === dataField) ?? null;
-    // this.columnToggle[dataField] = !this.columnToggle?.[dataField]
-    //   ?? selectedColumn?.hidden ?? false;
-    this.setState(({ columnToggle }) => ({
-      columnToggle: {
-        ...columnToggle,
-        [dataField]: !columnToggle?.[dataField] ?? selectedColumn?.hidden ?? false
-      }
-    }));
+    this.setState(({ columnToggle }) => {
+      const fallbackValue = !columnToggle?.[dataField] ?? selectedColumn?.hidden ?? false;
+      const value = typeof forceValue === 'boolean' ? forceValue : fallbackValue;
+      return {
+        columnToggle: {
+          ...columnToggle,
+          [dataField]: value
+        }
+      };
+    });
   }
 
   /**
