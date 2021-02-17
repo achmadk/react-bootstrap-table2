@@ -1,6 +1,6 @@
 {
 	"name": "react-bootstrap-table2-toolkit-esm",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"description": "The toolkit for react-bootstrap-table2",
 	"main": "dist/react-bootstrap-table2-toolkit-esm.cjs.js",
 	"module": "dist/react-bootstrap-table2-toolkit-esm.esm.js",
