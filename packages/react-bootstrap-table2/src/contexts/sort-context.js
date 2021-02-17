@@ -18,10 +18,10 @@ export default (
       let sortColumn;
       const { defaultSorted, defaultSortDirection, sort } = props;
 
-      if (defaultSorted && defaultSorted.length > 0) {
-        sortOrder = defaultSorted[0].order || defaultSortDirection;
-        sortColumn = this.initSort(defaultSorted[0].dataField, sortOrder);
-      } else if (sort && sort.dataField && sort.order) {
+      if (defaultSorted?.length > 0) {
+        sortOrder = defaultSorted?.[0]?.order ?? defaultSortDirection;
+        sortColumn = this.initSort(defaultSorted?.[0]?.dataField, sortOrder);
+      } else if (sort?.dataField && sort?.order) {
         sortOrder = sort.order;
         sortColumn = this.initSort(sort.dataField, sortOrder);
       }
@@ -36,9 +36,9 @@ export default (
     }
 
     // UNSAFE_componentWillReceiveProps(nextProps) {
-    static getDerivedStateFromProps(nextProps) {
-      if (nextProps?.sort?.dataField && nextProps?.sort?.order) {
-        const { sort, columns } = nextProps;
+    static getDerivedStateFromProps(props) {
+      if (props?.sort?.dataField && props?.sort?.order) {
+        const { sort, columns } = props;
         return {
           sortOrder: sort.order,
           sortColumn: columns.find((col) => col.dataField === sort.dataField)
@@ -80,8 +80,7 @@ export default (
 
     render() {
       let { data } = this.props;
-      const { children } = this.props;
-      const { sort } = this.props;
+      const { children, sort } = this.props;
       const { sortOrder, sortColumn } = this.state;
       if (!isRemoteSort() && sortColumn) {
         const sortFunc = sortColumn.sortFunc ? sortColumn.sortFunc : (sort && sort.sortFunc);
@@ -94,7 +93,7 @@ export default (
             data,
             sortOrder,
             onSort: this.handleSort,
-            sortField: sortColumn ? sortColumn.dataField : null
+            sortField: sortColumn?.dataField ?? null
           } }
         >
           { children }
