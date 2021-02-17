@@ -19,17 +19,15 @@ class ToolkitProvider extends statelessDecorator(React.Component) {
       }, {}) ?? null
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (prevProps?.columnToggle !== this.props?.columnToggle) {
-      if (!this._.isEqual(prevState.columnToggle, this.state.columnToggle)) {
-        const columnToggle = this.props?.columns
-          ?.reduce((obj, column) => {
-            obj[column.dataField] = !column.hidden;
-            return obj;
-          }, {}) ?? null;
-        // eslint-disable-next-line react/no-did-update-set-state
-        this.setState({ columnToggle });
-      }
+      const columnToggle = this.props?.columns
+        ?.reduce((obj, column) => {
+          obj[column.dataField] = !column.hidden;
+          return obj;
+        }, {}) ?? null;
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ columnToggle });
     }
   }
 
