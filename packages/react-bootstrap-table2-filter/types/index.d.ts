@@ -3,17 +3,19 @@
 /// <reference types="node" />
 import { CSSProperties, ComponentType, Consumer } from 'react';
 import { ReactBootstrapTableUtilities, BootstrapTableColumns, DefaultTableData, EventEmitter } from 'react-bootstrap-table-next-esm';
-export declare type FILTER_TYPES = {
+export declare const FILTER_TYPES: {
     TEXT: 'TEXT';
     SELECT: 'SELECT';
     MULTISELECT: 'MULTISELECT';
     NUMBER: 'NUMBER';
     DATE: 'DATE';
 };
+
+export declare type FilterType = typeof FILTER_TYPES
 /**
  * Filter comparators used for table filters
  */
-export declare type Comparator = {
+export declare const Comparator: {
     LIKE: 'LIKE';
     EQ: '=';
     NE: '!=';
@@ -22,6 +24,9 @@ export declare type Comparator = {
     LT: '<';
     LE: '<=';
 };
+
+export declare type ComparatorType = typeof Comparator
+
 export declare type DefaultReactBootstrapTableFilter<FilterProps = any, FilterComponentProps = any> = {
     Filter: ComponentType<FilterComponentProps>;
     props: FilterProps;
@@ -59,10 +64,10 @@ export interface TextFilterOptionalProps {
      * Specify what kind of comparator to compare.
      * @default Comparator.LIKE
      *
-     * @type {keyof Comparator}
+     * @type {ComparatorType[keyof ComparatorType]}
      * @memberof TextFilterOptionalProps
      */
-    comparator: Comparator[keyof Comparator];
+    comparator: ComparatorType[keyof ComparatorType];
     /**
      * this props able to set true if comparator is LIKE.
      * @default false
@@ -143,10 +148,10 @@ export interface SelectFilterOptionalProps {
      * Specify what kind of comparator to compare.
      * @default EQ
      *
-     * @type {Comparator[keyof Comparator]}
+     * @type {ComparatorType[keyof ComparatorType]}
      * @memberof SelectFilterOptionalProps
      */
-    comparator: Comparator[keyof Comparator];
+    comparator: ComparatorType[keyof ComparatorType];
     /**
      * your custom inline styles on input
      *
@@ -245,10 +250,10 @@ export interface MultiSelectFilterOptionalProps {
      * Specify what kind of comparator to compare.
      * @default EQ
      *
-     * @type {Comparator[keyof Comparator]}
+     * @type {ComparatorType[keyof ComparatorType]}
      * @memberof MultiSelectFilterOptionalProps
      */
-    comparator: Comparator[keyof Comparator];
+    comparator: ComparatorType[keyof ComparatorType];
     /**
      * your custom inline styles on input
      *
@@ -337,15 +342,15 @@ export interface NumberFilterOptionalProps {
      */
     defaultValue: {
         number: number;
-        comparator: Comparator[keyof Comparator];
+        comparator: ComparatorType[keyof ComparatorType];
     };
     /**
      * Specify what kind of comparator to compare. Default is to list all of comparators.
      *
-     * @type {Comparator[keyof Comparator][]}
+     * @type {ComparatorType[keyof ComparatorType][]}
      * @memberof NumberFilterOptionalProps
      */
-    comparators: Comparator[keyof Comparator][];
+    comparators: ComparatorType[keyof ComparatorType][];
     /**
      * custom class name on the wrapper of number input and comparator drop down.
      *
@@ -445,21 +450,21 @@ export interface DateFilterOptionalProps {
      * - date: a date object which need to be filtered
      * - comparator: what kind of comparator to compare
      *
-     * @type {{ date: Date, comparator: Comparator[keyof Comparator] }}
+     * @type {{ date: Date, comparator: ComparatorType[keyof ComparatorType] }}
      * @memberof DateFilterOptionalProps
      */
     defaultValue: {
         date: Date;
-        comparator: Comparator[keyof Comparator];
+        comparator: ComparatorType[keyof ComparatorType];
     };
     /**
      * Specify what kind of comparator to compare.
      * Default is to list all of comparators.
      *
-     * @type {Comparator[keyof Comparator][]}
+     * @type {ComparatorType[keyof ComparatorType][]}
      * @memberof DateFilterOptionalProps
      */
-    comparator: Comparator[keyof Comparator][];
+    comparator: ComparatorType[keyof ComparatorType][];
     /**
      * custom class name on the wrapper of date input and comparator drop down.
      *
@@ -534,15 +539,15 @@ export interface CustomFilterOptionalProps {
      * @type {FILTER_TYPES[keyof FILTER_TYPES]}
      * @memberof CustomFilterOptionalProps
      */
-    type: FILTER_TYPES[keyof FILTER_TYPES];
+    type: FilterType[keyof FilterType];
     /**
      * Specify what kind of comparator to compare.
      * Default is Comparator.LIKE. But if customFilter.type is FILTER_TYPES.SELECT, this default value will be Comparator.EQ
      *
-     * @type {Comparator}
+     * @type {ComparatorType[keyof ComparatorType]}
      * @memberof CustomFilterOptionalProps
      */
-    comparator: Comparator[keyof Comparator];
+    comparator: ComparatorType[keyof ComparatorType];
     /**
      * default is false, and true will only work when comparator is LIKE.
      * @default false
@@ -565,15 +570,15 @@ export interface FilterFactoryProps<TableData extends DefaultTableData = Default
 }
 interface FilterPayload {
     filterVal: any;
-    filterType: FILTER_TYPES[keyof FILTER_TYPES];
-    comparator: Comparator[keyof Comparator];
+    filterType: FilterType[keyof FilterType];
+    comparator: ComparatorType[keyof ComparatorType];
     caseSensitive: boolean;
 }
 declare type HandleFilterChange = (payload?: Record<string, FilterPayload>) => void | Promise<void>;
 interface FilterContext<TableData extends DefaultTableData = DefaultTableData, Column extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> {
     data: TableData[];
-    onFilter(column: Column, filterType: FILTER_TYPES[keyof FILTER_TYPES], initialize?: boolean): (value: any) => void | Promise<void>;
-    onExternalFilter(column: Column, filterType: FILTER_TYPES[keyof FILTER_TYPES]): (value: any) => void | Promise<void>;
+    onFilter(column: Column, filterType: FilterType[keyof FilterType], initialize?: boolean): (value: any) => void | Promise<void>;
+    onExternalFilter(column: Column, filterType: FilterType[keyof FilterType]): (value: any) => void | Promise<void>;
     currFilters?: FilterPayload;
 }
 interface FilterContextProviderProps<TableData extends DefaultTableData = DefaultTableData, Column extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>, FilterProps extends FilterFactoryProps<TableData> = FilterFactoryProps<TableData>> {
