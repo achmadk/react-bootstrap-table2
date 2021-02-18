@@ -12,7 +12,10 @@
 		".": {
 			"require": "./dist/react-bootstrap-table2-toolkit-esm.cjs.js",
 			"import": "./dist/react-bootstrap-table2-toolkit-esm.esm.js"
-		}
+		},
+		"./dist/css/react-bootstrap-table2-toolkit-esm.css": "./dist/css/react-bootstrap-table2-toolkit-esm.css",
+		"./dist/css/react-bootstrap-table2-toolkit-esm.min.css": "./dist/css/react-bootstrap-table2-toolkit-esm.min.css",
+		"./style/react-bootstrap-table2-toolkit-esm.scss": "./style/react-bootstrap-table2-toolkit-esm.scss"
 	},
 	"typings": "types/index.d.ts",
 	"sideEffects": false,

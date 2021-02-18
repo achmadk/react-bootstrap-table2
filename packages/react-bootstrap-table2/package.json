@@ -9,7 +9,10 @@
 		".": {
 			"import": "./dist/react-bootstrap-table-next-esm.esm.js",
 			"require": "./dist/react-bootstrap-table-next-esm.cjs.js"
-		}
+		},
+		"./dist/css/react-bootstrap-table-next-esm.css": "./dist/css/react-bootstrap-table-next-esm.css",
+		"./dist/css/react-bootstrap-table-next-esm.min.css": "./dist/css/react-bootstrap-table-next-esm.min.css",
+		"./style/react-bootstrap-table-next-esm.scss": "./style/react-bootstrap-table-next-esm.scss"
 	},
 	"browser": {
 		"./dist/react-bootstrap-table-next-esm.cjs.js": "./dist/react-bootstrap-table-next-esm.browser.cjs.js",

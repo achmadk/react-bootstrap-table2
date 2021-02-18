@@ -1,4 +1,4 @@
-import './style/react-bootstrap-table2-paginator.scss';
+import './style/react-bootstrap-table2-paginator-esm.scss';
 
 // import React from 'react';
 // import PropTypes from 'prop-types';

@@ -1,1 +1,1 @@
-import './style/react-bootstrap-table2.scss';
+import './style/react-bootstrap-table-next-esm.scss';

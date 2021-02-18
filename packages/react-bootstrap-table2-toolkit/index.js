@@ -1,4 +1,4 @@
-import './style/react-bootstrap-table2-toolkit.scss';
+import './style/react-bootstrap-table2-toolkit-esm.scss';
 
 // import Context from './context';
 // import ToolkitProvider from './provider';

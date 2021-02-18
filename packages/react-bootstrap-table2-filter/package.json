@@ -12,7 +12,10 @@
     ".": {
       "require": "./dist/react-bootstrap-table2-filter-esm.cjs.js",
       "import": "./dist/react-bootstrap-table2-filter-esm.esm.js"
-    }
+    },
+    "./dist/css/react-bootstrap-table2-filter-esm.css": "./dist/css/react-bootstrap-table2-filter-esm.css",
+    "./dist/css/react-bootstrap-table2-filter-esm.min.css": "./dist/css/react-bootstrap-table2-filter-esm.min.css",
+    "./style/react-bootstrap-table2-filter-esm.scss": "./style/react-bootstrap-table2-filter-esm.scss"
   },
   "typings": "types/index.d.ts",
   "sideEffects": false,
@@ -58,7 +61,7 @@
   "peerDependencies": {
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
-    "react-bootstrap-table-next-esm": "^0.1.7",
+    "react-bootstrap-table-next-esm": "^0.1.10",
     "react-dom": "^17.0.1"
   },
   "preconstruct": {

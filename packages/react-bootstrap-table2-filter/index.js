@@ -1,4 +1,4 @@
-import './style/react-bootstrap-table2-filter.scss';
+import './style/react-bootstrap-table2-filter-esm.scss';
 
 // import TextFilter from './src/components/text';
 // import SelectFilter from './src/components/select';
