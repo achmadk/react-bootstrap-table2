@@ -993,6 +993,25 @@ export interface BootstrapTableState<TableData extends DefaultTableData = Defaul
         newValue: TableData[keyof TableData];
     };
 }
+
+export interface BootstrapTableSortAttributes<TableData extends DefaultTableData = DefaultTableData> {
+    dataField: keyof TableData;
+    order: BootstrapTableOrders;
+}
+
+export interface BootstrapTableSortMethods<
+    TableData extends DefaultTableData = DefaultTableData,
+    Column extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>
+> {
+    sortCaret: Column['sortCaret'];
+    sortFunc: Column['sortFunc'];
+}
+
+export type BootstrapTableSort<
+    TableData extends DefaultTableData = DefaultTableData,
+    Column extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>
+> = BootstrapTableSortAttributes<TableData> | BootstrapTableSortMethods<TableData, Column>
+
 /**
  *
  *
@@ -1000,7 +1019,10 @@ export interface BootstrapTableState<TableData extends DefaultTableData = Defaul
  * @interface BootstrapTableOptionalProps
  * @template TableData
  */
-export interface BootstrapTableOptionalProps<TableData extends DefaultTableData = DefaultTableData> {
+export interface BootstrapTableOptionalProps<
+    TableData extends DefaultTableData = DefaultTableData,
+    Column extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>
+> {
     /**
      * Customize ID on `table` element.
      *
@@ -1231,13 +1253,7 @@ export interface BootstrapTableOptionalProps<TableData extends DefaultTableData 
     rowClasses: string | ((row: TableData, rowIndex: number) => string);
     rowEvents: BootstrapTableRowEvents<TableData>;
     hiddenRows: TableData[keyof TableData][];
-    sort: {
-        dataField: keyof TableData;
-        order: BootstrapTableOrders;
-    } | {
-        sortCaret: BootstrapTableColumns<TableData>['sortCaret'];
-        sortFunc: BootstrapTableColumns<TableData>['sortFunc'];
-    };
+    sort: BootstrapTableSort<TableData, Column>;
     defaultSorted: {
         dataField: keyof TableData | string;
         order: BootstrapTableOrders;
@@ -1268,7 +1284,7 @@ export interface BootstrapTableOptionalProps<TableData extends DefaultTableData 
  * @template TableData
  * @template ColumnAttributes
  */
-export interface BootstrapTableProps<TableData extends DefaultTableData = DefaultTableData, ColumnAttributes extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> extends Partial<BootstrapTableOptionalProps<TableData>> {
+export interface BootstrapTableProps<TableData extends DefaultTableData = DefaultTableData, ColumnAttributes extends BootstrapTableColumns<TableData> = BootstrapTableColumns<TableData>> extends Partial<BootstrapTableOptionalProps<TableData, ColumnAttributes>> {
     /**
      * Tells `react-bootstrap-table2` which column of the data is unique. This should be the name of a property that is unique for each item in your dataset
      *
