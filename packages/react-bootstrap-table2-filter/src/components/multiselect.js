@@ -3,7 +3,7 @@
 /* eslint no-return-assign: 0 */
 /* eslint no-param-reassign: 0 */
 /* eslint react/no-unused-prop-types: 0 */
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { LIKE, EQ } from '../comparison';
 import { FILTER_TYPE } from '../const';
@@ -32,9 +32,10 @@ const getSelections = (container) => {
 };
 
 class MultiSelectFilter extends Component {
+  selectInputRef = createRef()
+
   constructor(props) {
     super(props);
-    this.applyFilter = this.applyFilter.bind(this);
     const isSelected = props.defaultValue.map((item) => props.options[item]).length > 0;
     this.state = { isSelected };
   }
@@ -42,15 +43,17 @@ class MultiSelectFilter extends Component {
   componentDidMount() {
     const { getFilter } = this.props;
 
-    const value = getSelections(this.selectInput);
-    if (value && value.length > 0) {
+    // const value = getSelections(this.selectInput);
+    const value = getSelections(this.selectInputRef.current);
+    if (value?.length > 0) {
       this.applyFilter(value);
     }
 
     // export onFilter function to allow users to access
     if (getFilter) {
       getFilter((filterVal) => {
-        this.selectInput.value = filterVal;
+        // this.selectInput.value = filterVal;
+        this.selectInputRef.current.value = filterVal;
         this.applyFilter(filterVal);
       });
     }
@@ -65,11 +68,12 @@ class MultiSelectFilter extends Component {
       needFilter = true;
     }
     if (needFilter) {
-      this.applyFilter(getSelections(this.selectInput));
+      // this.applyFilter(getSelections(this.selectInput));
+      this.applyFilter(getSelections(this.selectInputRef.current));
     }
   }
 
-  getDefaultValue() {
+  getDefaultValue = () => {
     const { filterState, defaultValue } = this.props;
     if (filterState && typeof filterState.filterVal !== 'undefined') {
       return filterState.filterVal;
@@ -77,7 +81,7 @@ class MultiSelectFilter extends Component {
     return defaultValue;
   }
 
-  getOptions() {
+  getOptions = () => {
     const optionTags = [];
     const {
       options, placeholder, column, withoutEmptyOption
@@ -109,7 +113,8 @@ class MultiSelectFilter extends Component {
   cleanFiltered() {
     const { defaultValue } = this.props;
     const value = (defaultValue !== undefined) ? defaultValue : [];
-    this.selectInput.value = value;
+    // this.selectInput.value = value;
+    this.selectInputRef.current.value = value;
     this.applyFilter(value);
   }
 
@@ -145,7 +150,8 @@ class MultiSelectFilter extends Component {
         </span>
         <select
           { ...rest }
-          ref={ (n) => this.selectInput = n }
+          // ref={ (n) => this.selectInput = n }
+          ref={ this.selectInputRef }
           id={ elmId }
           style={ style }
           multiple
