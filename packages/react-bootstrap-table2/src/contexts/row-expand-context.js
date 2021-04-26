@@ -25,27 +25,18 @@ class RowExpandProvider extends React.Component {
     };
   }
 
-  componentDidUpdate() {
-    const { expanded } = this.state;
-    if (this.props.expandRow) {
-      let nextExpanded = [...(this.props?.expandRow?.expanded ?? expanded)];
-      const { nonExpandable = [] } = this.props.expandRow;
-      nextExpanded = nextExpanded.filter((rowId) => !_.contains(nonExpandable, rowId));
-      const isClosing = expanded.reduce((acc, cur) => {
-        if (!_.contains(nextExpanded, cur)) {
-          acc.push(cur);
-        }
-        return acc;
-      }, []);
-
-      this.setState(() => ({
-        expanded: nextExpanded,
-        isClosing
-      }));
-    } else {
-      this.setState(() => ({
-        expanded
-      }));
+  componentDidUpdate(prevProps) {
+    if (!_.isEqual(this.props.expandRow, prevProps.expandRow)) {
+      this.setState(({ expanded }) => {
+        let nextExpanded = [...(this.props?.expandRow?.expanded ?? expanded)];
+        const { nonExpandable = [] } = this.props.expandRow;
+        nextExpanded = nextExpanded.filter((rowId) => !_.contains(nonExpandable, rowId));
+        const isClosing = expanded?.filter((cur) => !_.contains(nextExpanded, cur)) ?? [];
+        return {
+          expanded: nextExpanded,
+          isClosing
+        };
+      });
     }
   }
 
