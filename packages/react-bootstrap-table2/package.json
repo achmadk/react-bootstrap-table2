@@ -59,17 +59,17 @@
 	],
 	"dependencies": {
 		"@types/events": "3.0.0",
-		"@types/underscore": "1.10.24",
-		"classnames": "^2.2.6",
+		"@types/underscore": "1.11.2",
+		"classnames": "^2.3.1",
 		"events": "3.3.0",
 		"react-transition-group": "^4.4.1",
-		"underscore": "1.12.0"
+		"underscore": "1.13.1"
 	},
 	"peerDependencies": {
-		"classnames": "^2.2.6",
+		"classnames": "^2.3.1",
 		"prop-types": "^15.7.2",
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1"
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
 	},
 	"preconstruct": {
 		"entrypoints": [

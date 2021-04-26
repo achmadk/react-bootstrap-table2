@@ -60,9 +60,9 @@
   ],
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-bootstrap-table-next-esm": "^0.1.10",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.2",
+    "react-bootstrap-table-next-esm": "^0.1.11",
+    "react-dom": "^17.0.2"
   },
   "preconstruct": {
     "entrypoints": [
@@ -70,7 +70,7 @@
     ]
   },
   "dependencies": {
-    "classnames": "2.2.6",
+    "classnames": "2.3.1",
     "events": "3.3.0"
   }
 }

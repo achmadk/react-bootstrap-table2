@@ -54,8 +54,8 @@
   ],
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "preconstruct": {
     "entrypoints": [
@@ -63,6 +63,6 @@
     ]
   },
   "dependencies": {
-    "classnames": "2.2.6"
+    "classnames": "2.3.1"
   }
 }
