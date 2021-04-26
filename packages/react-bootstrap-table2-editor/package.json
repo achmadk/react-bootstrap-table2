@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-table2-editor-esm",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "it's the editor addon for react-bootstrap-table2",
   "main": "dist/react-bootstrap-table2-editor-esm.cjs.js",
   "module": "dist/react-bootstrap-table2-editor-esm.esm.js",
